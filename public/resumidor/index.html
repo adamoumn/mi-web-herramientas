@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Resumidor de textos gratis | Resume artículos y apuntes</title>
+<meta name="description" content="Resumidor de textos online gratis en español: resume artículos, apuntes y correos en un párrafo o en puntos clave. Sin registro.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://yoptools.com/resumidor/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/">YopTools</a><nav><a href="/#herramientas">Herramientas</a><a href="/contacto/">Contacto</a></nav></header>
+<main class="wrap">
+<h1>Resumidor de textos</h1><p class="sub">Pega un artículo, un apunte o un correo largo y obtén un resumen claro en segundos.</p>
+<div class="opts"><div><label for="fmt">Formato</label><select id="fmt"><option value="medio">Párrafo</option><option value="puntos">Puntos clave</option><option value="corto">Muy breve</option></select></div></div>
+<div class="two">
+<section class="panel"><label for="inp">Tu texto</label><textarea id="inp" placeholder="Pega aquí el texto que quieres resumir (de 40 a 3.000 palabras)…"></textarea>
+<div class="row"><span id="count" class="meta">0 / 3.000 palabras</span><button class="main" id="go">Resumir texto</button></div></section>
+<section class="panel" aria-live="polite"><span class="lab">Resumen</span><div id="out" class="out empty">Aquí aparecerá tu resumen.</div>
+<div class="row"><span id="oc" class="meta"></span><button id="copy" disabled>Copiar</button></div></section>
+</div>
+<div id="st" class="status" role="status"></div>
+<p class="note">No pegues datos personales ni información confidencial. Revisa siempre el resultado antes de usarlo.</p>
+<h2>Cómo funciona</h2><p class="sub">La herramienta lee tu texto, identifica las ideas principales y las condensa sin añadir información que no esté en el original. Puedes elegir entre un párrafo, una lista de puntos clave o un resumen muy breve.</p><h2>Preguntas frecuentes</h2><details><summary>¿Qué longitud de texto admite?</summary><p>De 40 a 3.000 palabras. Si tienes un texto más largo, divídelo en partes y resume cada una.</p></details><details><summary>¿Puede equivocarse el resumen?</summary><p>Puede omitir matices o cometer errores, como cualquier IA. Si el resumen es importante, contrástalo con el original.</p></details>
+</main>
+<footer>
+<div class="foot">
+<div><a class="brand" href="/">YopTools</a><p style="margin-top:10px">Herramientas gratuitas con IA para escribir mejor, en español.</p></div>
+<div><h4>Herramientas</h4><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a><a href="/parafraseador/">Parafraseador</a><a href="/resumidor/">Resumidor</a></div>
+<div><h4>Legal</h4><a href="/privacidad/">Privacidad</a><a href="/aviso-legal/">Aviso legal</a><a href="/cookies/">Cookies</a></div>
+<div><h4>Contacto</h4><a href="/contacto/">Escríbenos</a><a href="#" data-email></a><a href="#" data-donate hidden>Invítame a un café</a></div>
+</div>
+<div class="copy">© 2026 YopTools. Todos los derechos reservados.</div>
+</footer>
+<script src="/config.js"></script>
+<script src="/common.js"></script>
+<script>
+var inp=$("inp"),out=$("out"),go=$("go"),cp=$("copy"),MAX=3000,txt="";
+counter(inp,$("count"),MAX);
+go.addEventListener("click",async function(){
+  var t=inp.value.trim(),n=words(t);
+  if(n<40){say("Pega un texto más largo (al menos 40 palabras).","err");return}
+  if(n>MAX){say("El texto supera las 3.000 palabras. Divídelo en partes.","err");return}
+  go.disabled=true;cp.disabled=true;say("Resumiendo…");
+  try{var d=await api("/api/summarize",{text:t,format:$("fmt").value});
+    txt=d.text;out.classList.remove("empty");out.textContent=txt;
+    var w=words(txt);$("oc").textContent=fmt(w)+" palabras · "+Math.max(0,Math.round(100-100*w/n))+" % más corto";
+    cp.disabled=false;say("Listo. Revisa el resumen antes de usarlo.","ok");
+  }catch(e){say(e.message,"err")}
+  go.disabled=false;
+});
+cp.addEventListener("click",function(){copyText(txt)});</script>
+</body>
+</html>

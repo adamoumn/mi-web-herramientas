@@ -129,7 +129,50 @@ async function rewrite(body, env) {
   return { sentences: out.map((x) => clip(x, 2000)) };
 }
 
-const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect, "/api/rewrite": rewrite };
+const MODES = {
+  estandar: "reformula con otras palabras manteniendo el significado y un registro parecido al original",
+  fluido: "mejora la fluidez y la naturalidad, con frases bien enlazadas",
+  formal: "usa un registro formal y profesional",
+  simple: "usa un lenguaje sencillo y frases cortas, fácil de entender por cualquiera",
+  corto: "hazlo más conciso: elimina lo accesorio sin perder las ideas clave; debe quedar claramente más corto",
+  expandido: "desarrolla un poco más las ideas, sin inventar datos nuevos; debe quedar algo más largo",
+};
+
+async function paraphrase(body, env) {
+  const text = clip(body.text, 12000);
+  const mode = MODES[body.mode] ? body.mode : "estandar";
+  const n = countWords(text);
+  if (!n) throw { status: 400, msg: "Pega primero un texto." };
+  if (n > MAX_WORDS) throw { status: 400, msg: "El texto supera las 1.000 palabras." };
+  const prompt =
+    `Eres un editor experto. Parafrasea el texto del usuario: ${MODES[mode]}.\n` +
+    `Reglas: mantén el idioma original y el significado; no inventes datos; conserva los nombres propios, cifras y fechas; ` +
+    `conserva los párrafos; el resultado debe sonar natural y no ser una copia con pocos cambios. ` +
+    `Devuelve ÚNICAMENTE el texto parafraseado, sin comentarios ni comillas. ${DATA_NOTE}\n\n<<<TEXTO\n${text}\nTEXTO>>>`;
+  return { text: await gemini(env, prompt, { temperature: 0.9 }) };
+}
+
+const FORMATS = {
+  corto: "un resumen muy breve de 1 o 2 frases",
+  medio: "un resumen de un párrafo (unas 4 a 6 frases)",
+  puntos: "una lista de puntos clave (entre 4 y 8 viñetas, cada una en una línea que empiece por «- »)",
+};
+
+async function summarize(body, env) {
+  const text = clip(body.text, 30000);
+  const format = FORMATS[body.format] ? body.format : "medio";
+  const n = countWords(text);
+  if (n < 40) throw { status: 400, msg: "Pega un texto más largo (al menos 40 palabras)." };
+  if (n > 3000) throw { status: 400, msg: "El texto supera las 3.000 palabras." };
+  const prompt =
+    `Eres un experto en síntesis. Resume el texto del usuario en ${FORMATS[format]}.\n` +
+    `Reglas: mantén el idioma original; incluye solo ideas que estén en el texto, sin inventar nada ni añadir opiniones; ` +
+    `prioriza las ideas principales, cifras y conclusiones; redacta con claridad. ` +
+    `Devuelve ÚNICAMENTE el resumen, sin introducción ni comentarios. ${DATA_NOTE}\n\n<<<TEXTO\n${text}\nTEXTO>>>`;
+  return { text: await gemini(env, prompt, { temperature: 0.4 }) };
+}
+
+const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect, "/api/rewrite": rewrite, "/api/paraphrase": paraphrase, "/api/summarize": summarize };
 
 
 // Límite diario por persona. Solo funciona si has creado el KV "LIMITS" (ver instrucciones).
