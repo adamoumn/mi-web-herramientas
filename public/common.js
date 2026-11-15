@@ -1,9 +1,8 @@
-// ====== DATOS QUE TIENES QUE RELLENAR (se aplican a toda la web) ======
-var CONTACT_EMAIL = "tu-correo@ejemplo.com"; // tu email de contacto
-var OWNER_NAME = "[Tu nombre o razón social]"; // titular de la web
-var OWNER_ID = "[Tu NIF/DNI]";                 // identificación fiscal
-var DONATE_URL = "";                           // enlace de Ko-fi (opcional)
-// =====================================================================
+// Los datos personales están en config.js
+var _E = typeof CONTACT_EMAIL === "string" ? CONTACT_EMAIL : "";
+var _N = typeof OWNER_NAME === "string" ? OWNER_NAME : "";
+var _I = typeof OWNER_ID === "string" ? OWNER_ID.trim() : "";
+var _D = typeof DONATE_URL === "string" ? DONATE_URL : "";
 var $ = function (i) { return document.getElementById(i); };
 function words(t) { var m = t.trim().match(/\S+/g); return m ? m.length : 0; }
 function fmt(n) { return n.toLocaleString("es-ES"); }
@@ -31,8 +30,9 @@ function counter(inp, el, max) {
   });
 }
 document.querySelectorAll("[data-email]").forEach(function (e) {
-  e.textContent = CONTACT_EMAIL; if (e.tagName === "A") e.href = "mailto:" + CONTACT_EMAIL;
+  e.textContent = _E; if (e.tagName === "A") e.href = "mailto:" + _E;
 });
-document.querySelectorAll("[data-owner]").forEach(function (e) { e.textContent = OWNER_NAME; });
-document.querySelectorAll("[data-ownerid]").forEach(function (e) { e.textContent = OWNER_ID; });
-if (DONATE_URL) document.querySelectorAll("[data-donate]").forEach(function (e) { e.href = DONATE_URL; e.hidden = false; });
+document.querySelectorAll("[data-owner]").forEach(function (e) { e.textContent = _N; });
+document.querySelectorAll("[data-ownerid]").forEach(function (e) { e.textContent = _I; });
+document.querySelectorAll(".idline").forEach(function (e) { e.hidden = !_I; });
+if (_D) document.querySelectorAll("[data-donate]").forEach(function (e) { e.href = _D; e.hidden = false; });
