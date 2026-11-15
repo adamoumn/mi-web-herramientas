@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Generador de respuestas a reseñas gratis | Google, TripAdvisor</title>
+<meta name="description" content="Genera respuestas profesionales a reseñas de clientes, positivas o negativas, para tu restaurante, hotel o tienda. Gratis.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/">Herramientas IA</a><nav><a href="/#herramientas">Herramientas</a><a href="/contacto/">Contacto</a></nav></header>
+<main class="wrap">
+<h1>Respuestas a reseñas</h1><p class="sub">Pega la reseña de tu cliente y genera una respuesta profesional, lista para publicar en Google, TripAdvisor o donde la necesites.</p>
+<div class="two">
+<section class="panel"><label for="rev">Reseña del cliente</label><textarea id="rev" placeholder="Pega aquí la reseña que quieres responder…" style="min-height:170px"></textarea>
+<div class="opts" style="margin-top:14px">
+<div class="grow"><label for="biz">Nombre del negocio (opcional)</label><input type="text" id="biz" maxlength="80"></div>
+<div class="grow"><label for="kind">Tipo de negocio (opcional)</label><input type="text" id="kind" maxlength="80" placeholder="Restaurante, clínica, hotel…"></div></div>
+<div class="opts">
+<div><label for="tone">Tono</label><select id="tone"><option value="profesional">Profesional</option><option value="cercano">Cercano</option><option value="empatico">Empático</option></select></div>
+<div><label for="len">Longitud</label><select id="len"><option value="media">Media</option><option value="corta">Corta</option></select></div>
+<div><label for="stars">Estrellas</label><select id="stars"><option value="">Sin indicar</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div></div>
+<label for="sign">Firma (opcional)</label><input type="text" id="sign" maxlength="60" placeholder="El equipo de…">
+<div class="row"><span></span><button class="main" id="go">Generar respuesta</button></div></section>
+<section class="panel" aria-live="polite"><span class="lab">Respuesta</span><div id="out" class="out empty">Aquí aparecerá la respuesta.</div>
+<div class="row"><button id="again" disabled>Generar otra</button><button id="copy" disabled>Copiar</button></div></section>
+</div>
+<div id="st" class="status" role="status"></div>
+<p class="note">No pegues datos personales de clientes (nombres completos, teléfonos, correos). Revisa la respuesta y ajústala a tu caso antes de publicarla.</p>
+<h2>Cómo funciona</h2><p class="sub">La respuesta se adapta a la reseña: agradece las positivas con detalles concretos y, ante una queja, pide disculpas con sinceridad, aborda el problema que menciona el cliente e invita a resolverlo en privado, sin inventar datos ni promesas.</p><h2>Preguntas frecuentes</h2><details><summary>¿Sirve para reseñas negativas?</summary><p>Sí. Es donde más ayuda: genera una respuesta educada y sin ponerse a la defensiva. Revísala y añade los datos de contacto reales de tu negocio.</p></details><details><summary>¿Puedo pedir otra versión?</summary><p>Sí. Pulsa «Generar otra» y obtendrás una redacción distinta de la misma respuesta.</p></details>
+</main>
+<footer>
+<div class="foot">
+<div><a class="brand" href="/">Herramientas IA</a><p style="margin-top:10px">Herramientas gratuitas con IA para escribir mejor, en español.</p></div>
+<div><h4>Herramientas</h4><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a></div>
+<div><h4>Legal</h4><a href="/privacidad/">Privacidad</a><a href="/aviso-legal/">Aviso legal</a><a href="/cookies/">Cookies</a></div>
+<div><h4>Contacto</h4><a href="/contacto/">Escríbenos</a><a href="#" data-email></a><a href="#" data-donate hidden>Invítame a un café</a></div>
+</div>
+<div class="copy">© 2026 Herramientas IA. Todos los derechos reservados.</div>
+</footer>
+<script src="/common.js"></script>
+<script>
+var out=$("out"),go=$("go"),cp=$("copy"),ag=$("again");
+async function run(){
+  var r=$("rev").value.trim();
+  if(!r){say("Pega primero la reseña del cliente.","err");return}
+  go.disabled=true;ag.disabled=true;cp.disabled=true;say("Generando respuesta…");
+  try{var d=await api("/api/resenas",{review:r,business:$("biz").value,kind:$("kind").value,tone:$("tone").value,length:$("len").value,stars:$("stars").value,sign:$("sign").value});
+    out.classList.remove("empty");out.textContent=d.text;cp.disabled=false;ag.disabled=false;say("Listo. Revisa la respuesta antes de publicarla.","ok");
+  }catch(e){say(e.message,"err");ag.disabled=!out.textContent||out.classList.contains("empty")}
+  go.disabled=false;
+}
+go.addEventListener("click",run);ag.addEventListener("click",run);
+cp.addEventListener("click",function(){copyText(out.textContent)});</script>
+</body>
+</html>

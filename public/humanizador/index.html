@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Humanizador de textos con IA gratis | Haz que suene humano</title>
+<meta name="description" content="Humaniza textos escritos con IA gratis: tono natural, frases variadas y sin muletillas robóticas. Sin registro.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/">Herramientas IA</a><nav><a href="/#herramientas">Herramientas</a><a href="/contacto/">Contacto</a></nav></header>
+<main class="wrap">
+<h1>Humanizador de textos</h1><p class="sub">Pega un texto redactado con IA y recíbelo con un tono natural, frases más variadas y sin muletillas robóticas.</p>
+<div class="opts">
+<div><label for="tone">Tono</label><select id="tone"><option value="natural">Natural</option><option value="cercano">Cercano e informal</option><option value="profesional">Profesional</option><option value="academico">Académico sencillo</option></select></div>
+<div><label for="lvl">Intensidad</label><select id="lvl"><option value="suave">Suave</option><option value="media" selected>Media</option><option value="fuerte">Fuerte</option></select></div>
+</div>
+<div class="two">
+<section class="panel"><label for="inp">Tu texto</label><textarea id="inp" placeholder="Pega aquí tu texto (máximo 1.000 palabras)…"></textarea>
+<div class="row"><span id="count" class="meta">0 / 1.000 palabras</span><button class="main" id="go">Humanizar texto</button></div></section>
+<section class="panel" aria-live="polite"><span class="lab">Resultado</span><div id="out" class="out empty">Aquí aparecerá tu texto reescrito.</div>
+<div class="row"><span id="oc" class="meta"></span><button id="copy" disabled>Copiar</button></div></section>
+</div>
+<div id="st" class="status" role="status"></div>
+<p class="note">No pegues datos personales ni información confidencial. Revisa siempre el resultado antes de usarlo.</p>
+<h2>Cómo funciona</h2><p class="sub">La herramienta reescribe tu texto manteniendo el significado, cambia el ritmo de las frases y elimina expresiones típicas de la IA. Cuanto mayor sea la intensidad, más cambia la redacción. Ninguna herramienta puede garantizar que un texto no sea detectado como IA.</p><h2>Preguntas frecuentes</h2><details><summary>¿Cambia el significado de mi texto?</summary><p>No debería. Está pensada para conservar las ideas y los datos. Aun así, revisa el resultado antes de usarlo.</p></details><details><summary>¿Funciona con otros idiomas?</summary><p>Sí. Mantiene el idioma del texto que pegues, aunque está pensada sobre todo para español.</p></details>
+</main>
+<footer>
+<div class="foot">
+<div><a class="brand" href="/">Herramientas IA</a><p style="margin-top:10px">Herramientas gratuitas con IA para escribir mejor, en español.</p></div>
+<div><h4>Herramientas</h4><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a></div>
+<div><h4>Legal</h4><a href="/privacidad/">Privacidad</a><a href="/aviso-legal/">Aviso legal</a><a href="/cookies/">Cookies</a></div>
+<div><h4>Contacto</h4><a href="/contacto/">Escríbenos</a><a href="#" data-email></a><a href="#" data-donate hidden>Invítame a un café</a></div>
+</div>
+<div class="copy">© 2026 Herramientas IA. Todos los derechos reservados.</div>
+</footer>
+<script src="/common.js"></script>
+<script>
+var inp=$("inp"),out=$("out"),go=$("go"),cp=$("copy"),MAX=1000;
+counter(inp,$("count"),MAX);
+go.addEventListener("click",async function(){
+  var t=inp.value.trim(),n=words(t);
+  if(!n){say("Pega primero un texto.","err");return}
+  if(n>MAX){say("El texto supera las 1.000 palabras. Divídelo en partes.","err");return}
+  go.disabled=true;cp.disabled=true;say("Humanizando…");
+  try{var d=await api("/api/humanize",{text:t,tone:$("tone").value,level:$("lvl").value});
+    out.classList.remove("empty");out.textContent=d.text;$("oc").textContent=fmt(words(d.text))+" palabras";cp.disabled=false;say("Listo. Revisa el texto antes de usarlo.","ok");
+  }catch(e){say(e.message,"err")}
+  go.disabled=false;
+});
+cp.addEventListener("click",function(){copyText(out.textContent)});</script>
+</body>
+</html>

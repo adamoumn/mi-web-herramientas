@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Detector de IA gratis | Porcentaje de IA en tu texto</title>
+<meta name="description" content="Detector de texto escrito con IA gratis: te dice el porcentaje estimado y subraya las frases más probables de ser IA.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/">Herramientas IA</a><nav><a href="/#herramientas">Herramientas</a><a href="/contacto/">Contacto</a></nav></header>
+<main class="wrap">
+<h1>Detector de IA</h1><p class="sub">Pega un texto y te decimos qué porcentaje parece escrito por IA, subrayando las frases más sospechosas.</p>
+<div class="two">
+<section class="panel"><label for="inp">Tu texto</label><textarea id="inp" placeholder="Pega aquí el texto a analizar (máximo 1.000 palabras)…"></textarea>
+<div class="row"><span id="count" class="meta">0 / 1.000 palabras</span><button class="main" id="go">Analizar texto</button></div></section>
+<section class="panel" aria-live="polite"><span class="lab">Resultado</span>
+<div id="empty" class="out empty">Aquí verás el porcentaje de IA y las frases marcadas.</div>
+<div id="result" hidden><div class="score" id="pct"></div><div class="verdict" id="verd"></div><div class="bar"><i id="barfill"></i></div><div class="res" id="res"></div>
+<div class="legend"><span><span class="s-hi">&nbsp;subrayado&nbsp;</span> muy probable IA</span><span><span class="s-mid">&nbsp;&nbsp;&nbsp;&nbsp;</span> algo probable</span></div></div></section>
+</div>
+<div id="st" class="status" role="status"></div>
+<p class="note"><strong>Es una estimación, no una prueba.</strong> Ningún detector es fiable al 100 %: puede marcar como IA textos escritos por personas y no detectar otros hechos con IA. No lo uses como único criterio para acusar a nadie.</p>
+<p class="note">No pegues datos personales ni información confidencial. Revisa siempre el resultado antes de usarlo.</p>
+<h2>Cómo funciona</h2><p class="sub">Analizamos cada frase buscando señales típicas de los textos generados por IA: tono genérico, estructuras muy simétricas, transiciones repetidas y falta de detalles concretos. El porcentaje global es la media de las frases, ponderada por su longitud.</p><h2>Preguntas frecuentes</h2><details><summary>¿Por qué un texto mío sale con IA?</summary><p>Los textos muy formales, neutros o escritos de forma muy ordenada pueden parecer de IA aunque los haya escrito una persona. Por eso el resultado es orientativo.</p></details><details><summary>¿Qué significan los colores?</summary><p>El texto subrayado son las frases con mayor probabilidad de ser IA. El color amarillo indica frases con una probabilidad media.</p></details>
+</main>
+<footer>
+<div class="foot">
+<div><a class="brand" href="/">Herramientas IA</a><p style="margin-top:10px">Herramientas gratuitas con IA para escribir mejor, en español.</p></div>
+<div><h4>Herramientas</h4><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a></div>
+<div><h4>Legal</h4><a href="/privacidad/">Privacidad</a><a href="/aviso-legal/">Aviso legal</a><a href="/cookies/">Cookies</a></div>
+<div><h4>Contacto</h4><a href="/contacto/">Escríbenos</a><a href="#" data-email></a><a href="#" data-donate hidden>Invítame a un café</a></div>
+</div>
+<div class="copy">© 2026 Herramientas IA. Todos los derechos reservados.</div>
+</footer>
+<script src="/common.js"></script>
+<script>
+var inp=$("inp"),go=$("go"),MAX=1000;
+counter(inp,$("count"),MAX);
+function split(text){
+  var paras=text.split(/\n+/),flat=[],map=[];
+  paras.forEach(function(p,pi){
+    var m=p.trim().match(/[^.!?]+[.!?]+["”')\]]*|[^.!?]+$/g)||[];
+    m.forEach(function(s){s=s.trim();if(s){flat.push(s);map.push(pi)}});
+  });
+  return {flat:flat,map:map,np:paras.length};
+}
+go.addEventListener("click",async function(){
+  var t=inp.value.trim(),n=words(t);
+  if(!n){say("Pega primero un texto.","err");return}
+  if(n>MAX){say("El texto supera las 1.000 palabras. Divídelo en partes.","err");return}
+  var sp=split(t);
+  if(sp.flat.length>250){say("Hay demasiadas frases. Prueba con un texto más corto.","err");return}
+  go.disabled=true;say("Analizando…");
+  try{
+    var d=await api("/api/detect",{sentences:sp.flat});
+    var tot=0,acc=0,res=$("res"),curP=-1,pEl=null;res.innerHTML="";
+    sp.flat.forEach(function(s,i){
+      var w=words(s),sc=d.scores[i];tot+=w;acc+=w*sc;
+      if(sp.map[i]!==curP){curP=sp.map[i];pEl=document.createElement("p");res.appendChild(pEl)}
+      var el=document.createElement("span");el.textContent=s+" ";
+      el.className=sc>=70?"s-hi":sc>=40?"s-mid":"";el.title=sc+" % probable IA";pEl.appendChild(el);
+    });
+    var pct=Math.round(acc/Math.max(tot,1));
+    $("pct").textContent=pct+" % IA";$("barfill").style.width=pct+"%";
+    $("verd").textContent=pct<30?"Parece escrito por una persona":pct<60?"Resultado mixto o poco claro":"Parece escrito con IA";
+    $("empty").hidden=true;$("result").hidden=false;say("Análisis completado. Recuerda que es solo una estimación.","ok");
+  }catch(e){say(e.message,"err")}
+  go.disabled=false;
+});</script>
+</body>
+</html>
