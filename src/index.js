@@ -145,7 +145,14 @@ async function usage(env, request) {
 
 export default {
   async fetch(request, env) {
-    const { pathname } = new URL(request.url);
+    const url = new URL(request.url);
+    const { pathname } = url;
+    // Redirige www.yoptools.com y la dirección workers.dev al dominio principal
+    const host = env.SITE_HOST || "yoptools.com";
+    if (url.hostname !== host && !url.hostname.startsWith("localhost") && (request.method === "GET" || request.method === "HEAD")) {
+      url.protocol = "https:"; url.hostname = host; url.port = "";
+      return Response.redirect(url.toString(), 301);
+    }
     const handler = ROUTES[pathname];
     if (!handler) return env.ASSETS.fetch(request);
     if (request.method !== "POST") return json({ error: "Método no permitido." }, 405);
