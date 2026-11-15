@@ -12,6 +12,11 @@ async function api(path, payload) {
   var r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
   var d = await r.json().catch(function () { return {}; });
   if (!r.ok) throw new Error(d.error || "No se pudo completar la acción. Inténtalo de nuevo.");
+  if (d.remaining != null) {
+    var el = $("left");
+    if (!el) { el = document.createElement("p"); el.id = "left"; el.className = "meta"; var st = $("st"); if (st) st.parentNode.insertBefore(el, st.nextSibling); }
+    el.textContent = "Usos gratuitos que te quedan hoy: " + d.remaining + ".";
+  }
   return d;
 }
 async function copyText(t) {

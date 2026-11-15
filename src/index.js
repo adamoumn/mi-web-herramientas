@@ -109,7 +109,39 @@ async function detect(body, env) {
   return { scores: scores.map((v) => Math.max(0, Math.min(100, Math.round(Number(v) || 0)))) };
 }
 
-const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect };
+
+async function rewrite(body, env) {
+  const s = Array.isArray(body.sentences) ? body.sentences.map((x) => clip(x, 1500)).filter(Boolean) : [];
+  if (!s.length) throw { status: 400, msg: "No hay frases que reescribir." };
+  if (s.length > 250 || countWords(s.join(" ")) > MAX_WORDS) throw { status: 400, msg: "El texto supera las 1.000 palabras." };
+  const prompt =
+    `Eres un editor experto. Reescribe CADA frase de la lista para que suene escrita por una persona real: ` +
+    `natural, con vocabulario cotidiano, sin muletillas de IA ni estructuras demasiado simétricas.\n` +
+    `Reglas: mantén el idioma y el significado exacto; no inventes datos; conserva más o menos la longitud; ` +
+    `cada frase debe seguir siendo una frase completa e independiente. ` +
+    `Devuelve SOLO un JSON con la forma {"sentences":[...]} con exactamente ${s.length} textos, en el mismo orden. ${DATA_NOTE}\n\n` +
+    `<<<FRASES\n${JSON.stringify(s)}\nFRASES>>>`;
+  const raw = await gemini(env, prompt, { temperature: 1, asJson: true });
+  let out;
+  try { out = JSON.parse(raw.replace(/```json|```/g, "").trim()).sentences; } catch { out = null; }
+  if (!Array.isArray(out) || out.length !== s.length || out.some((x) => typeof x !== "string" || !x.trim()))
+    throw { status: 502, msg: "No se pudieron reescribir las frases. Inténtalo de nuevo." };
+  return { sentences: out.map((x) => clip(x, 2000)) };
+}
+
+const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect, "/api/rewrite": rewrite };
+
+
+// Límite diario por persona. Solo funciona si has creado el KV "LIMITS" (ver instrucciones).
+async function usage(env, request) {
+  if (!env.LIMITS) return null;
+  const limit = parseInt(env.DAILY_LIMIT || "15", 10);
+  const ip = request.headers.get("CF-Connecting-IP") || "desconocida";
+  const key = `rl:${ip}:${new Date().toISOString().slice(0, 10)}`;
+  let used = 0;
+  try { used = parseInt((await env.LIMITS.get(key)) || "0", 10); } catch {}
+  return { limit, key, used };
+}
 
 export default {
   async fetch(request, env) {
@@ -119,8 +151,16 @@ export default {
     if (request.method !== "POST") return json({ error: "Método no permitido." }, 405);
     let body;
     try { body = await request.json(); } catch { return json({ error: "Petición no válida." }, 400); }
+    const u = await usage(env, request);
+    if (u && u.used >= u.limit)
+      return json({ error: `Has llegado al límite gratuito de hoy (${u.limit} usos). Vuelve mañana.` }, 429);
     try {
-      return json(await handler(body, env));
+      const result = await handler(body, env);
+      if (u) {
+        try { await env.LIMITS.put(u.key, String(u.used + 1), { expirationTtl: 90000 }); } catch {}
+        result.remaining = Math.max(0, u.limit - u.used - 1);
+      }
+      return json(result);
     } catch (e) {
       return json({ error: e.msg || "Error inesperado." }, e.status || 500);
     }

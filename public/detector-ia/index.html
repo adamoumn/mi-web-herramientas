@@ -18,8 +18,11 @@
 <section class="panel" aria-live="polite"><span class="lab">Resultado</span>
 <div id="empty" class="out empty">Aquí verás el porcentaje de IA y las frases marcadas.</div>
 <div id="result" hidden><div class="score" id="pct"></div><div class="verdict" id="verd"></div><div class="bar"><i id="barfill"></i></div><div class="res" id="res"></div>
-<div class="legend"><span><span class="s-hi">&nbsp;subrayado&nbsp;</span> muy probable IA</span><span><span class="s-mid">&nbsp;&nbsp;&nbsp;&nbsp;</span> algo probable</span></div></div></section>
+<div class="legend"><span><span class="s-hi">&nbsp;subrayado&nbsp;</span> muy probable IA</span><span><span class="s-mid">&nbsp;&nbsp;&nbsp;&nbsp;</span> algo probable</span></div>
+<div class="row"><span class="meta" id="fixhint"></span><button class="main" id="fix" hidden>Reescribir frases marcadas</button></div></div></section>
 </div>
+<section class="panel" id="newbox" hidden style="margin-top:16px"><span class="lab">Texto con las frases marcadas reescritas</span><div class="res" id="newtxt"></div>
+<div class="row"><span class="meta">Las frases nuevas aparecen en verde.</span><span><button id="reanalyze">Analizar de nuevo</button> <button id="copynew">Copiar</button></span></div></section>
 <div id="st" class="status" role="status"></div>
 <p class="note"><strong>Es una estimación, no una prueba.</strong> Ningún detector es fiable al 100 %: puede marcar como IA textos escritos por personas y no detectar otros hechos con IA. No lo uses como único criterio para acusar a nadie.</p>
 <p class="note">No pegues datos personales ni información confidencial. Revisa siempre el resultado antes de usarlo.</p>
@@ -36,7 +39,7 @@
 </footer>
 <script src="/common.js"></script>
 <script>
-var inp=$("inp"),go=$("go"),MAX=1000;
+var inp=$("inp"),go=$("go"),MAX=1000,last=null,newText="";
 counter(inp,$("count"),MAX);
 function split(text){
   var paras=text.split(/\n+/),flat=[],map=[];
@@ -65,9 +68,32 @@ go.addEventListener("click",async function(){
     var pct=Math.round(acc/Math.max(tot,1));
     $("pct").textContent=pct+" % IA";$("barfill").style.width=pct+"%";
     $("verd").textContent=pct<30?"Parece escrito por una persona":pct<60?"Resultado mixto o poco claro":"Parece escrito con IA";
+    last={sp:sp,scores:d.scores};var nf=d.scores.filter(function(x){return x>=50}).length;
+    $("newbox").hidden=true;$("fix").hidden=nf===0;$("fixhint").textContent=nf?nf+(nf===1?" frase marcada":" frases marcadas"):"";
     $("empty").hidden=true;$("result").hidden=false;say("Análisis completado. Recuerda que es solo una estimación.","ok");
   }catch(e){say(e.message,"err")}
   go.disabled=false;
-});</script>
+});
+$("fix").addEventListener("click",async function(){
+  if(!last)return;
+  var ix=[];last.scores.forEach(function(s,i){if(s>=50)ix.push(i)});
+  if(!ix.length)return;
+  var b=$("fix");b.disabled=true;say("Reescribiendo las frases marcadas…");
+  try{
+    var d=await api("/api/rewrite",{sentences:ix.map(function(i){return last.sp.flat[i]})});
+    var rep={};ix.forEach(function(i,k){rep[i]=d.sentences[k]});
+    var box=$("newtxt");box.innerHTML="";var cur=-1,pEl=null,plain=[],pp="";
+    last.sp.flat.forEach(function(s,i){
+      if(last.sp.map[i]!==cur){if(pEl)plain.push(pp.trim());cur=last.sp.map[i];pEl=document.createElement("p");box.appendChild(pEl);pp=""}
+      var txt=rep[i]!==undefined?rep[i]:s,el=document.createElement("span");
+      el.textContent=txt+" ";if(rep[i]!==undefined)el.className="s-new";pEl.appendChild(el);pp+=txt+" ";
+    });
+    plain.push(pp.trim());newText=plain.join("\n\n");
+    $("newbox").hidden=false;say("Listo. Las frases reescritas aparecen en verde.","ok");
+  }catch(e){say(e.message,"err")}
+  b.disabled=false;
+});
+$("copynew").addEventListener("click",function(){copyText(newText)});
+$("reanalyze").addEventListener("click",function(){inp.value=newText;inp.dispatchEvent(new Event("input"));go.click()});</script>
 </body>
 </html>
