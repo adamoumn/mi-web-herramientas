@@ -8,6 +8,10 @@
     "run_worker_first": ["/api/*"]
   },
   "vars": {
-    "GEMINI_MODEL": "gemini-flash-lite-latest"
-  }
+    "GEMINI_MODEL": "gemini-flash-lite-latest",
+    "DAILY_LIMIT": "15"
+  },
+  "kv_namespaces": [
+    { "binding": "LIMITS", "id": "c012c2bc84eb4056ae6618a8c59fc359" }
+  ]
 }
