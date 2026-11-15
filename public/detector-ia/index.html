@@ -69,7 +69,8 @@ go.addEventListener("click",async function(){
       el.className=sc>=70?"s-hi":sc>=40?"s-mid":"";el.title=sc+" % probable IA";pEl.appendChild(el);
     });
     var pct=Math.round(acc/Math.max(tot,1));
-    $("pct").textContent=pct+" % IA";$("barfill").style.width=pct+"%";
+    (function(){var el=$("pct"),t0=null;function f(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);el.textContent=Math.round(pct*(1-Math.pow(1-k,3)))+" % IA";if(k<1)requestAnimationFrame(f)}requestAnimationFrame(f)})();
+    setTimeout(function(){$("barfill").style.width=pct+"%"},80);
     $("verd").textContent=pct<30?"Parece escrito por una persona":pct<60?"Resultado mixto o poco claro":"Parece escrito con IA";
     last={sp:sp,scores:d.scores};var nf=d.scores.filter(function(x){return x>=50}).length;
     $("newbox").hidden=true;$("fix").hidden=nf===0;$("fixhint").textContent=nf?nf+(nf===1?" frase marcada":" frases marcadas"):"";

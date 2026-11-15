@@ -6,7 +6,7 @@ var _D = typeof DONATE_URL === "string" ? DONATE_URL : "";
 var $ = function (i) { return document.getElementById(i); };
 function words(t) { var m = t.trim().match(/\S+/g); return m ? m.length : 0; }
 function fmt(n) { return n.toLocaleString("es-ES"); }
-function say(t, c) { var s = $("st"); if (s) { s.textContent = t; s.className = "status " + (c || ""); } }
+function say(t, c) { var s = $("st"); if (s) { s.textContent = t; s.className = "status " + (c || (/…$/.test(t) ? "work" : "")); } }
 async function api(path, payload) {
   var r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
   var d = await r.json().catch(function () { return {}; });
@@ -36,3 +36,12 @@ document.querySelectorAll("[data-owner]").forEach(function (e) { e.textContent =
 document.querySelectorAll("[data-ownerid]").forEach(function (e) { e.textContent = _I; });
 document.querySelectorAll(".idline").forEach(function (e) { e.hidden = !_I; });
 if (_D) document.querySelectorAll("[data-donate]").forEach(function (e) { e.href = _D; e.hidden = false; });
+
+(function () {
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var els = document.querySelectorAll(".tool,.points p,details,.two>.panel,.prose h2,.pill,.cta");
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(function (el, i) { el.classList.add("reveal"); el.style.setProperty("--d", (i % 3) * 90 + "ms"); io.observe(el); });
+})();
