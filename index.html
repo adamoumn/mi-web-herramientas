@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Humanizador de textos con IA gratis</title>
+<meta name="description" content="Convierte textos escritos con IA en textos con tono natural y humano. Gratis y sin registro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f4;--card:#fff;--ink:#14213d;--mute:#5b6678;--line:#d5dbe3;--acc:#2f5bff;--accink:#fff;--ok:#0f7a4d;--err:#b3261e;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1520;--card:#18202e;--ink:#e8edf6;--mute:#9aa6b8;--line:#2b3548;--acc:#6f8dff;--accink:#0b1020;--ok:#4cc38a;--err:#ff8a80}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:920px;margin:0 auto;padding:40px 20px 56px}
+h1{font:800 clamp(2rem,6vw,3.2rem)/1.05 "Bricolage Grotesque",Inter,system-ui,sans-serif;margin:0 0 12px;letter-spacing:-.02em}
+.sub{color:var(--mute);max-width:56ch;margin:0 0 28px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+label,.lab{font:700 .95rem "Bricolage Grotesque",Inter,sans-serif;display:block;margin-bottom:8px}
+textarea{width:100%;min-height:280px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:12px;background:transparent;color:var(--ink);font:inherit}
+textarea:focus,select:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.out{min-height:280px;white-space:pre-wrap;border:1px dashed var(--line);border-radius:10px;padding:12px;overflow-wrap:anywhere}
+.out.empty{color:var(--mute)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:12px}
+.meta{color:var(--mute);font-size:.88rem}
+.meta.bad{color:var(--err)}
+select{border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:var(--card);color:var(--ink);font:inherit}
+button{font:700 1rem "Bricolage Grotesque",Inter,sans-serif;border-radius:10px;padding:11px 20px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink)}
+button.main{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+button:disabled{opacity:.55;cursor:not-allowed}
+.opts{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.status{min-height:1.4em;margin-top:12px;font-size:.92rem}
+.status.err{color:var(--err)}.status.ok{color:var(--ok)}
+footer{margin-top:28px;color:var(--mute);font-size:.88rem;display:grid;gap:8px}
+footer a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+<h1>Haz que tu texto suene escrito por una persona</h1>
+<p class="sub">Pega un texto redactado con IA y recíbelo con un tono natural, frases más variadas y sin muletillas robóticas. Gratis, sin registro.</p>
+
+<div class="opts">
+  <div><label for="tone">Tono</label>
+    <select id="tone"><option value="natural">Natural</option><option value="cercano">Cercano e informal</option><option value="profesional">Profesional</option><option value="academico">Académico sencillo</option></select></div>
+  <div><label for="lvl">Intensidad</label>
+    <select id="lvl"><option value="suave">Suave (cambia poco)</option><option value="media" selected>Media</option><option value="fuerte">Fuerte (reescribe más)</option></select></div>
+</div>
+
+<div class="grid">
+  <section class="panel">
+    <label for="inp">Tu texto</label>
+    <textarea id="inp" placeholder="Pega aquí tu texto (máximo 1.000 palabras)…"></textarea>
+    <div class="row"><span id="count" class="meta">0 / 1.000 palabras</span>
+      <button class="main" id="go">Humanizar texto</button></div>
+  </section>
+  <section class="panel" aria-live="polite">
+    <span class="lab">Resultado</span>
+    <div id="out" class="out empty">Aquí aparecerá tu texto reescrito.</div>
+    <div class="row"><span id="oc" class="meta"></span><button id="copy" disabled>Copiar</button></div>
+  </section>
+</div>
+<div id="st" class="status" role="status"></div>
+
+<footer>
+  <span>Este texto es una reescritura automática: revísalo siempre antes de usarlo. Ninguna herramienta puede garantizar que un texto no sea detectado como IA.</span>
+  <span>Privacidad: el texto se envía a un servicio de IA de terceros para procesarlo. No pegues datos personales ni información confidencial.</span>
+  <span id="donwrap" hidden>¿Te ha sido útil? <a id="don" href="#" target="_blank" rel="noopener">Invítame a un café</a> y ayuda a mantener la herramienta gratis.</span>
+</footer>
+</main>
+
+<script>
+(function(){
+// ====== CONFIGURA AQUÍ ======
+var DONATE_URL = "";   // Pega aquí tu enlace de Ko-fi o Buy Me a Coffee (entre las comillas)
+var MAX = 1000;
+// ============================
+var $=function(i){return document.getElementById(i)};
+var inp=$('inp'),out=$('out'),go=$('go'),cp=$('copy'),st=$('st');
+function words(t){var m=t.trim().match(/\S+/g);return m?m.length:0}
+function fmt(n){return n.toLocaleString('es-ES')}
+function say(t,c){st.textContent=t;st.className='status '+(c||'')}
+if(DONATE_URL){$('don').href=DONATE_URL;$('donwrap').hidden=false}
+inp.addEventListener('input',function(){var n=words(inp.value),c=$('count');c.textContent=fmt(n)+' / '+fmt(MAX)+' palabras';c.className='meta'+(n>MAX?' bad':'')});
+
+go.addEventListener('click',async function(){
+  var txt=inp.value.trim(), n=words(txt);
+  if(!n){say('Pega primero un texto.','err');return}
+  if(n>MAX){say('El texto supera las 1.000 palabras. Divídelo en partes.','err');return}
+  go.disabled=true;cp.disabled=true;say('Humanizando…');
+  try{
+    var res=await fetch('/api/humanize',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({text:txt,tone:$('tone').value,level:$('lvl').value})});
+    var data=await res.json().catch(function(){return {}});
+    if(!res.ok){throw new Error(data.error||'No se pudo humanizar el texto.')}
+    out.classList.remove('empty');
+    out.textContent=data.text;
+    $('oc').textContent=fmt(words(data.text))+' palabras';
+    cp.disabled=false;say('Listo. Revisa el texto antes de usarlo.','ok');
+  }catch(e){say(e.message||'No se pudo humanizar el texto. Inténtalo de nuevo.','err')}
+  go.disabled=false;
+});
+
+cp.addEventListener('click',async function(){
+  try{await navigator.clipboard.writeText(out.textContent);say('Texto copiado.','ok')}
+  catch(e){say('No se pudo copiar automáticamente. Selecciona el texto y copia con Ctrl+C.')}
+});
+})();
+</script>
+</body>
+</html>
