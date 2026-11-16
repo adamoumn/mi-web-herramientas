@@ -206,7 +206,47 @@ const EN = {
 };
 const tr = (m, body) => (body && body.lang === "en" ? EN[m] || m : m);
 
-const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect, "/api/rewrite": rewrite, "/api/paraphrase": paraphrase, "/api/summarize": summarize };
+const CARTA_TONES = {
+  firme: "firm but polite, assertive without being aggressive",
+  formal: "very formal and respectful",
+  cordial: "cordial, warm and professional",
+  breve: "brief and direct, with no unnecessary words",
+};
+const CARTAS = {
+  reclamacion: { kind: "a formal complaint letter from a consumer to a company (carta de reclamación)", req: ["empresa", "hechos"], checks: [],
+    f: { empresa: "Company or recipient", tipo: "Type of complaint", hechos: "What happened (facts as told by the sender)", pide: "What the sender asks for", plazo: "Number of days the company has to reply" } },
+  baja: { kind: "a formal letter cancelling a subscription or service contract (carta de baja)", req: ["empresa", "fecha"], checks: ["devolucion"],
+    f: { empresa: "Company", servicio: "Type of service", fecha: "Requested cancellation date", motivo: "Reason (optional)" } },
+  dimision: { kind: "a resignation letter from an employee (carta de dimisión)", req: ["puesto", "ultimo"], checks: ["transicion"],
+    f: { puesto: "Job title", empresa: "Company (optional)", ultimo: "Last working day", motivo: "Reason for leaving" } },
+  solicitud: { kind: "a formal request letter to a company or public body (carta de solicitud)", req: ["destinatario", "asunto", "solicitud"], checks: [],
+    f: { destinatario: "Addressed to", asunto: "Subject", solicitud: "What is being requested", contexto: "Background (optional)" } },
+};
+const CHECKS = {
+  devolucion: "Also ask for a refund of any amounts charged after the cancellation date.",
+  transicion: "Offer help with the handover of tasks during the notice period.",
+};
+async function carta(body, env) {
+  const cfg = CARTAS[body.carta];
+  if (!cfg) throw { status: 400, msg: "Tipo de carta no válido." };
+  const v = (k) => clip(body[k], 1500);
+  if (cfg.req.some((k) => !v(k))) throw { status: 400, msg: "Rellena los campos obligatorios." };
+  const tone = CARTA_TONES[body.tono] || CARTA_TONES.formal;
+  const details = Object.entries(cfg.f).filter(([k]) => v(k)).map(([k, label]) => `- ${label}: ${v(k)}`).join("\n");
+  const extras = cfg.checks.filter((k) => body[k] === true).map((k) => `- ${CHECKS[k]}`).join("\n");
+  const prompt =
+    `You are an expert at writing formal letters in Spain. Write ${cfg.kind}, ready to send.\nTone: ${tone}.\n` +
+    `Rules:\n- Write the whole letter in Spanish from Spain.\n` +
+    `- For personal data do NOT invent anything: use placeholders in square brackets, such as [Nombre y apellidos], [DNI], [Dirección], [Ciudad], [Fecha], [Teléfono], [Correo electrónico], [Número de pedido o contrato].\n` +
+    `- Do not invent facts, dates, amounts, names or details that are not in the details below.\n` +
+    `- Do NOT cite specific laws, articles, legal deadlines or legal consequences. If a reply deadline in days is given, state it exactly; otherwise do not set one.\n` +
+    `- Structure: place and date line, recipient, an "Asunto:" line, greeting, body, a clear request, closing and a signature placeholder. If attachments make sense, write only "[Documentación adjunta, si procede]".\n` +
+    `- Use clear, natural Spanish with no clichés. No markdown, no bold, no headings. Return ONLY the letter as plain text. ${DATA_NOTE}\n\n` +
+    `<<<DETAILS\n${details}\n${extras}\nDETAILS>>>`;
+  return { text: await gemini(env, prompt, { temperature: 0.8 }) };
+}
+
+const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect, "/api/rewrite": rewrite, "/api/paraphrase": paraphrase, "/api/summarize": summarize, "/api/carta": carta };
 
 
 // Límite diario por persona. Solo funciona si has creado el KV "LIMITS" (ver instrucciones).

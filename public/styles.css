@@ -125,3 +125,10 @@ input[type=number],input[type=file]{width:100%;border:1px solid var(--line);bord
 .files{display:grid;gap:10px;margin-top:16px}
 .file{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.92rem}
 .file small{color:var(--mute)}
+
+/* ===== Cartas ===== */
+.dd-menu.three{grid-template-columns:repeat(3,1fr);min-width:700px}
+@media(max-width:720px){.dd-menu.three{grid-template-columns:1fr;min-width:0}}
+.foot{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.warn{background:var(--accsoft);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:.92rem;margin:0 0 18px}
+select,input[type=text],input[type=number]{max-width:100%}
