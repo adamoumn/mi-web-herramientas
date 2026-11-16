@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://yoptools.com/</loc></url>
-  <url><loc>https://yoptools.com/humanizador/</loc></url>
-  <url><loc>https://yoptools.com/detector-ia/</loc></url>
-  <url><loc>https://yoptools.com/respuestas-resenas/</loc></url>
-  <url><loc>https://yoptools.com/contacto/</loc></url>
-  <url><loc>https://yoptools.com/privacidad/</loc></url>
-  <url><loc>https://yoptools.com/aviso-legal/</loc></url>
-  <url><loc>https://yoptools.com/cookies/</loc></url>
-  <url><loc>https://yoptools.com/parafraseador/</loc></url>
-  <url><loc>https://yoptools.com/resumidor/</loc></url>
-  <url><loc>https://yoptools.com/guias/</loc></url>
-  <url><loc>https://yoptools.com/guias/humanizar-texto-chatgpt/</loc></url>
-  <url><loc>https://yoptools.com/guias/responder-resena-negativa-google/</loc></url>
-  <url><loc>https://yoptools.com/guias/resumir-texto-largo/</loc></url>
-  <url><loc>https://yoptools.com/guias/detectar-texto-escrito-con-ia/</loc></url>
-  <url><loc>https://yoptools.com/guias/que-es-parafrasear/</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://yoptools.com/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/"/></url>
+  <url><loc>https://yoptools.com/en/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/"/></url>
+  <url><loc>https://yoptools.com/humanizador/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/humanizador/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/humanizer/"/></url>
+  <url><loc>https://yoptools.com/en/humanizer/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/humanizador/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/humanizer/"/></url>
+  <url><loc>https://yoptools.com/detector-ia/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/detector-ia/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/ai-detector/"/></url>
+  <url><loc>https://yoptools.com/en/ai-detector/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/detector-ia/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/ai-detector/"/></url>
+  <url><loc>https://yoptools.com/respuestas-resenas/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/respuestas-resenas/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/review-replies/"/></url>
+  <url><loc>https://yoptools.com/en/review-replies/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/respuestas-resenas/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/review-replies/"/></url>
+  <url><loc>https://yoptools.com/parafraseador/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/parafraseador/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/paraphraser/"/></url>
+  <url><loc>https://yoptools.com/en/paraphraser/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/parafraseador/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/paraphraser/"/></url>
+  <url><loc>https://yoptools.com/resumidor/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/resumidor/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/summarizer/"/></url>
+  <url><loc>https://yoptools.com/en/summarizer/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/resumidor/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/summarizer/"/></url>
+  <url><loc>https://yoptools.com/guias/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/"/></url>
+  <url><loc>https://yoptools.com/en/guides/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/"/></url>
+  <url><loc>https://yoptools.com/guias/humanizar-texto-chatgpt/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/humanizar-texto-chatgpt/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/humanize-chatgpt-text/"/></url>
+  <url><loc>https://yoptools.com/en/guides/humanize-chatgpt-text/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/humanizar-texto-chatgpt/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/humanize-chatgpt-text/"/></url>
+  <url><loc>https://yoptools.com/guias/responder-resena-negativa-google/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/responder-resena-negativa-google/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/reply-negative-google-review/"/></url>
+  <url><loc>https://yoptools.com/en/guides/reply-negative-google-review/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/responder-resena-negativa-google/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/reply-negative-google-review/"/></url>
+  <url><loc>https://yoptools.com/guias/resumir-texto-largo/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/resumir-texto-largo/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/summarize-long-text/"/></url>
+  <url><loc>https://yoptools.com/en/guides/summarize-long-text/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/resumir-texto-largo/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/summarize-long-text/"/></url>
+  <url><loc>https://yoptools.com/guias/detectar-texto-escrito-con-ia/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/detectar-texto-escrito-con-ia/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/detect-ai-written-text/"/></url>
+  <url><loc>https://yoptools.com/en/guides/detect-ai-written-text/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/detectar-texto-escrito-con-ia/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/detect-ai-written-text/"/></url>
+  <url><loc>https://yoptools.com/guias/que-es-parafrasear/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/que-es-parafrasear/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/what-is-paraphrasing/"/></url>
+  <url><loc>https://yoptools.com/en/guides/what-is-paraphrasing/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/guias/que-es-parafrasear/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/guides/what-is-paraphrasing/"/></url>
+  <url><loc>https://yoptools.com/contacto/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/contacto/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/contact/"/></url>
+  <url><loc>https://yoptools.com/en/contact/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/contacto/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/contact/"/></url>
+  <url><loc>https://yoptools.com/privacidad/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/privacidad/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/privacy/"/></url>
+  <url><loc>https://yoptools.com/en/privacy/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/privacidad/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/privacy/"/></url>
+  <url><loc>https://yoptools.com/aviso-legal/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/aviso-legal/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/legal-notice/"/></url>
+  <url><loc>https://yoptools.com/en/legal-notice/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/aviso-legal/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/legal-notice/"/></url>
+  <url><loc>https://yoptools.com/cookies/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/cookies/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/cookies/"/></url>
+  <url><loc>https://yoptools.com/en/cookies/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/cookies/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/cookies/"/></url>
+  <url><loc>https://yoptools.com/contador-palabras/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/contador-palabras/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/word-counter/"/></url>
+  <url><loc>https://yoptools.com/en/word-counter/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/contador-palabras/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/word-counter/"/></url>
+  <url><loc>https://yoptools.com/cambiar-mayusculas/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/cambiar-mayusculas/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/case-converter/"/></url>
+  <url><loc>https://yoptools.com/en/case-converter/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/cambiar-mayusculas/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/case-converter/"/></url>
+  <url><loc>https://yoptools.com/generador-contrasenas/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/generador-contrasenas/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/password-generator/"/></url>
+  <url><loc>https://yoptools.com/en/password-generator/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/generador-contrasenas/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/password-generator/"/></url>
+  <url><loc>https://yoptools.com/comprimir-imagenes/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/comprimir-imagenes/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/image-compressor/"/></url>
+  <url><loc>https://yoptools.com/en/image-compressor/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/comprimir-imagenes/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/image-compressor/"/></url>
+  <url><loc>https://yoptools.com/calculadora-porcentajes/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/calculadora-porcentajes/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/percentage-calculator/"/></url>
+  <url><loc>https://yoptools.com/en/percentage-calculator/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/calculadora-porcentajes/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/percentage-calculator/"/></url>
+  <url><loc>https://yoptools.com/limpiar-texto/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/limpiar-texto/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/text-cleaner/"/></url>
+  <url><loc>https://yoptools.com/en/text-cleaner/</loc><xhtml:link rel="alternate" hreflang="es" href="https://yoptools.com/limpiar-texto/"/><xhtml:link rel="alternate" hreflang="en" href="https://yoptools.com/en/text-cleaner/"/></url>
 </urlset>

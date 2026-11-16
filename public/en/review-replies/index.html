@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free review reply generator | Google, TripAdvisor</title>
+<meta name="description" content="Generate professional replies to customer reviews, positive or negative, for your restaurant, hotel or shop. Free.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://yoptools.com/en/review-replies/">
+<link rel="alternate" hreflang="es" href="https://yoptools.com/respuestas-resenas/">
+<link rel="alternate" hreflang="en" href="https://yoptools.com/en/review-replies/">
+<link rel="alternate" hreflang="x-default" href="https://yoptools.com/respuestas-resenas/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/en/">YopTools</a><nav><div class="dd"><button class="dd-btn" aria-expanded="false" aria-haspopup="true">Tools</button><div class="dd-menu" hidden><div><h5>AI tools</h5><a href="/en/humanizer/">Text humanizer</a><a href="/en/ai-detector/">AI detector</a><a href="/en/review-replies/">Review replies</a><a href="/en/paraphraser/">Paraphraser</a><a href="/en/summarizer/">Summarizer</a></div><div><h5>Quick tools, no AI</h5><a href="/en/word-counter/">Word counter</a><a href="/en/case-converter/">Case converter</a><a href="/en/password-generator/">Password generator</a><a href="/en/image-compressor/">Image compressor</a><a href="/en/percentage-calculator/">Percentage calculator</a><a href="/en/text-cleaner/">Text cleaner</a></div></div></div><a href="/en/guides/">Guides</a><a href="/en/contact/">Contact</a><span class="lang"><a href="/respuestas-resenas/" data-lang="es" hreflang="es">ES</a><a href="/en/review-replies/" data-lang="en" class="on" hreflang="en">EN</a></span></nav></header>
+<main class="wrap">
+<h1>Review replies</h1><p class="sub">Paste your customer’s review and generate a professional reply, ready to post on Google, TripAdvisor or wherever you need it.</p>
+<div class="two">
+<section class="panel"><label for="rev">Customer review</label><textarea id="rev" placeholder="Paste the review you want to reply to here…" style="min-height:170px"></textarea>
+<div class="opts" style="margin-top:14px">
+<div class="grow"><label for="biz">Business name (optional)</label><input type="text" id="biz" maxlength="80"></div>
+<div class="grow"><label for="kind">Business type (optional)</label><input type="text" id="kind" maxlength="80" placeholder="Restaurant, clinic, hotel…"></div></div>
+<div class="opts">
+<div><label for="tone">Tone</label><select id="tone"><option value="profesional">Professional</option><option value="cercano">Friendly</option><option value="empatico">Empathetic</option></select></div>
+<div><label for="len">Length</label><select id="len"><option value="media">Medium</option><option value="corta">Short</option></select></div>
+<div><label for="stars">Stars</label><select id="stars"><option value="">Not specified</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div></div>
+<label for="sign">Signature (optional)</label><input type="text" id="sign" maxlength="60" placeholder="The team at…">
+<div class="row"><span></span><button class="main" id="go">Generate reply</button></div></section>
+<section class="panel" aria-live="polite"><span class="lab">Reply</span><div id="out" class="out empty">The reply will appear here.</div>
+<div class="row"><button id="again" disabled>Generate another</button><button id="copy" disabled>Copy</button></div></section>
+</div>
+<div id="st" class="status" role="status"></div>
+<p class="note">Do not paste customers’ personal data (full names, phone numbers, emails). Review the reply and adapt it to your case before publishing.</p>
+<h2>How it works</h2><p class="sub">The reply adapts to the review: it thanks positive reviewers with concrete details and, for a complaint, apologizes sincerely, addresses the problem the customer mentions and invites them to resolve it privately, without inventing facts or promises.</p><h2>Frequently asked questions</h2><details><summary>Does it work for negative reviews?</summary><p>Yes. That is where it helps most: it writes a polite reply without getting defensive. Review it and add your business’s real contact details.</p></details><details><summary>Can I ask for another version?</summary><p>Yes. Click “Generate another” and you will get a different wording of the same reply.</p></details>
+</main>
+<footer><div class="foot"><div><a class="brand" href="/en/">YopTools</a><p style="margin-top:10px">Free AI tools to write better.</p></div><div><h4>Tools</h4><a href="/en/humanizer/">Text humanizer</a><a href="/en/ai-detector/">AI detector</a><a href="/en/review-replies/">Review replies</a><a href="/en/paraphraser/">Paraphraser</a><a href="/en/summarizer/">Summarizer</a><a href="/en/guides/">Guides</a></div><div><h4>Utilities</h4><a href="/en/word-counter/">Word counter</a><a href="/en/case-converter/">Case converter</a><a href="/en/password-generator/">Password generator</a><a href="/en/image-compressor/">Image compressor</a><a href="/en/percentage-calculator/">Percentage calculator</a><a href="/en/text-cleaner/">Text cleaner</a></div><div><h4>Legal</h4><a href="/en/privacy/">Privacy</a><a href="/en/legal-notice/">Legal notice</a><a href="/en/cookies/">Cookies</a></div><div><h4>Contact</h4><a href="/en/contact/">Write to us</a><a href="#" data-email></a><a href="#" data-donate hidden>Buy me a coffee</a></div></div><div class="copy">© 2026 YopTools. All rights reserved.</div></footer>
+<script src="/config.js"></script>
+<script src="/common.js"></script>
+<script>
+var out=$("out"),go=$("go"),cp=$("copy"),ag=$("again");
+async function run(){
+  var r=$("rev").value.trim();
+  if(!r){say("Paste the customer review first.","err");return}
+  go.disabled=true;ag.disabled=true;cp.disabled=true;say("Generating reply…");
+  try{var d=await api("/api/resenas",{review:r,business:$("biz").value,kind:$("kind").value,tone:$("tone").value,length:$("len").value,stars:$("stars").value,sign:$("sign").value});
+    out.classList.remove("empty");out.textContent=d.text;cp.disabled=false;ag.disabled=false;say("Done. Review the reply before publishing it.","ok");
+  }catch(e){say(e.message,"err");ag.disabled=!out.textContent||out.classList.contains("empty")}
+  go.disabled=false;
+}
+go.addEventListener("click",run);ag.addEventListener("click",run);
+cp.addEventListener("click",function(){copyText(out.textContent)});</script>
+</body>
+</html>

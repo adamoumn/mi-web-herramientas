@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculadora de porcentajes online | YopTools</title>
+<meta name="description" content="Calcula porcentajes, variaciones, aumentos y descuentos al instante. Gratis y sin registro.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://yoptools.com/calculadora-porcentajes/">
+<link rel="alternate" hreflang="es" href="https://yoptools.com/calculadora-porcentajes/">
+<link rel="alternate" hreflang="en" href="https://yoptools.com/en/percentage-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://yoptools.com/calculadora-porcentajes/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/">YopTools</a><nav><div class="dd"><button class="dd-btn" aria-expanded="false" aria-haspopup="true">Herramientas</button><div class="dd-menu" hidden><div><h5>Con IA</h5><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a><a href="/parafraseador/">Parafraseador</a><a href="/resumidor/">Resumidor</a></div><div><h5>Rápidas, sin IA</h5><a href="/contador-palabras/">Contador de palabras</a><a href="/cambiar-mayusculas/">Cambiar mayúsculas</a><a href="/generador-contrasenas/">Generador de contraseñas</a><a href="/comprimir-imagenes/">Comprimir imágenes</a><a href="/calculadora-porcentajes/">Calculadora de porcentajes</a><a href="/limpiar-texto/">Limpiar texto</a></div></div></div><a href="/guias/">Guías</a><a href="/contacto/">Contacto</a><span class="lang"><a href="/calculadora-porcentajes/" data-lang="es" class="on" hreflang="es">ES</a><a href="/en/percentage-calculator/" data-lang="en" hreflang="en">EN</a></span></nav></header>
+<main class="wrap">
+<h1>Calculadora de porcentajes</h1><p class="sub">Calcula el tanto por ciento de una cantidad, qué porcentaje es un número de otro, variaciones, aumentos y descuentos.</p><div class="two"><section class="panel calc"><span class="lab">¿Cuánto es el X % de Y?</span><div class="inline"><input type="text" inputmode="decimal" id="a1" aria-label="A1"><span>% de</span><input type="text" inputmode="decimal" id="b1" aria-label="B1"></div><div class="res2" id="r1">—</div></section><section class="panel calc"><span class="lab">¿Qué porcentaje es X de Y?</span><div class="inline"><input type="text" inputmode="decimal" id="a2" aria-label="A2"><span>es qué % de</span><input type="text" inputmode="decimal" id="b2" aria-label="B2"></div><div class="res2" id="r2">—</div></section><section class="panel calc"><span class="lab">Variación porcentual</span><div class="inline"><span>de</span><input type="text" inputmode="decimal" id="a3" aria-label="A3"><span>a</span><input type="text" inputmode="decimal" id="b3" aria-label="B3"></div><div class="res2" id="r3">—</div></section><section class="panel calc"><span class="lab">Aumentar o reducir un valor</span><div class="inline"><input type="text" inputmode="decimal" id="a4" aria-label="A4"><span>% sobre</span><input type="text" inputmode="decimal" id="b4" aria-label="B4"></div><div class="res2" id="r4">—</div></section></div><div id="st" class="status" role="status"></div><p class="note">Todo se procesa en tu navegador: tu texto no se envía a ningún servidor.</p><h2>Cómo funciona</h2><p class="sub">Calcula porcentajes en un momento: cuánto es un porcentaje de una cantidad, qué porcentaje representa un número sobre otro, la variación entre dos valores y el efecto de aumentar o reducir una cifra. Útil para descuentos, impuestos, notas o comparar precios.</p><h2>Preguntas frecuentes</h2><details><summary>¿Cómo calculo un descuento?</summary><p>Escribe el porcentaje y el precio en la última calculadora: te muestra el precio con aumento y con descuento.</p></details><details><summary>¿Qué es la variación porcentual?</summary><p>Mide cuánto ha subido o bajado un valor respecto al original: (nuevo − antiguo) ÷ antiguo × 100.</p></details>
+</main>
+<footer><div class="foot"><div><a class="brand" href="/">YopTools</a><p style="margin-top:10px">Herramientas gratuitas con IA para escribir mejor, en español.</p></div><div><h4>Herramientas</h4><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a><a href="/parafraseador/">Parafraseador</a><a href="/resumidor/">Resumidor</a><a href="/guias/">Guías</a></div><div><h4>Utilidades</h4><a href="/contador-palabras/">Contador de palabras</a><a href="/cambiar-mayusculas/">Cambiar mayúsculas</a><a href="/generador-contrasenas/">Generador de contraseñas</a><a href="/comprimir-imagenes/">Comprimir imágenes</a><a href="/calculadora-porcentajes/">Calculadora de porcentajes</a><a href="/limpiar-texto/">Limpiar texto</a></div><div><h4>Legal</h4><a href="/privacidad/">Privacidad</a><a href="/aviso-legal/">Aviso legal</a><a href="/cookies/">Cookies</a></div><div><h4>Contacto</h4><a href="/contacto/">Escríbenos</a><a href="#" data-email></a><a href="#" data-donate hidden>Invítame a un café</a></div></div><div class="copy">© 2026 YopTools. Todos los derechos reservados.</div></footer>
+<script src="/config.js"></script>
+<script src="/common.js"></script>
+<script>var S={"inc": "Con aumento", "dec": "Con descuento"};
+function n(id){var v=parseFloat(($(id).value||"").replace(",","."));return isFinite(v)?v:null}
+function f(x){return x.toLocaleString(LOC,{maximumFractionDigits:2})}
+function upd(){var a,b;a=n("a1");b=n("b1");$("r1").textContent=(a!==null&&b!==null)?f(a*b/100):"—";
+a=n("a2");b=n("b2");$("r2").textContent=(a!==null&&b!==null&&b!==0)?f(a/b*100)+" %":"—";
+a=n("a3");b=n("b3");$("r3").textContent=(a!==null&&b!==null&&a!==0)?(b>=a?"+":"")+f((b-a)/a*100)+" %":"—";
+a=n("a4");b=n("b4");$("r4").textContent=(a!==null&&b!==null)?S.inc+": "+f(b*(1+a/100))+"  ·  "+S.dec+": "+f(b*(1-a/100)):"—"}
+document.querySelectorAll("input").forEach(function(i){i.addEventListener("input",upd)});upd();</script>
+</body>
+</html>

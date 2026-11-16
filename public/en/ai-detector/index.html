@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free AI detector | AI percentage of your text</title>
+<meta name="description" content="Free AI text detector: shows the estimated percentage and underlines the sentences most likely to be AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://yoptools.com/en/ai-detector/">
+<link rel="alternate" hreflang="es" href="https://yoptools.com/detector-ia/">
+<link rel="alternate" hreflang="en" href="https://yoptools.com/en/ai-detector/">
+<link rel="alternate" hreflang="x-default" href="https://yoptools.com/detector-ia/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/en/">YopTools</a><nav><div class="dd"><button class="dd-btn" aria-expanded="false" aria-haspopup="true">Tools</button><div class="dd-menu" hidden><div><h5>AI tools</h5><a href="/en/humanizer/">Text humanizer</a><a href="/en/ai-detector/">AI detector</a><a href="/en/review-replies/">Review replies</a><a href="/en/paraphraser/">Paraphraser</a><a href="/en/summarizer/">Summarizer</a></div><div><h5>Quick tools, no AI</h5><a href="/en/word-counter/">Word counter</a><a href="/en/case-converter/">Case converter</a><a href="/en/password-generator/">Password generator</a><a href="/en/image-compressor/">Image compressor</a><a href="/en/percentage-calculator/">Percentage calculator</a><a href="/en/text-cleaner/">Text cleaner</a></div></div></div><a href="/en/guides/">Guides</a><a href="/en/contact/">Contact</a><span class="lang"><a href="/detector-ia/" data-lang="es" hreflang="es">ES</a><a href="/en/ai-detector/" data-lang="en" class="on" hreflang="en">EN</a></span></nav></header>
+<main class="wrap">
+<h1>AI detector</h1><p class="sub">Paste a text and we tell you what percentage looks AI-written, underlining the most suspicious sentences.</p>
+<div class="two">
+<section class="panel"><label for="inp">Your text</label><textarea id="inp" placeholder="Paste the text to analyze here (max 1,000 words)…"></textarea>
+<div class="row"><span id="count" class="meta">0 / 1,000 words</span><button class="main" id="go">Analyze text</button></div></section>
+<section class="panel" aria-live="polite"><span class="lab">Result</span>
+<div id="empty" class="out empty">You will see the AI percentage and the flagged sentences here.</div>
+<div id="result" hidden><div class="score" id="pct"></div><div class="verdict" id="verd"></div><div class="bar"><i id="barfill"></i></div><div class="res" id="res"></div>
+<div class="legend"><span><span class="s-hi">&nbsp;underlined&nbsp;</span> very likely AI</span><span><span class="s-mid">&nbsp;&nbsp;&nbsp;&nbsp;</span> somewhat likely</span></div>
+<div class="row"><span class="meta" id="fixhint"></span><button class="main" id="fix" hidden>Rewrite flagged sentences</button></div></div></section>
+</div>
+<section class="panel" id="newbox" hidden style="margin-top:16px"><span class="lab">Text with the flagged sentences rewritten</span><div class="res" id="newtxt"></div>
+<div class="row"><span class="meta">New sentences appear in green.</span><span><button id="reanalyze">Analyze again</button> <button id="copynew">Copy</button></span></div></section>
+<div id="st" class="status" role="status"></div>
+<p class="note"><strong>It is an estimate, not proof.</strong> No detector is 100% reliable: it can flag human-written text as AI and miss AI-made text. Do not use it as the only reason to accuse anyone.</p>
+<p class="note">Do not paste personal data or confidential information. Always review the result before using it.</p>
+<h2>How it works</h2><p class="sub">We analyze each sentence looking for typical signs of AI-generated text: generic tone, very symmetrical structures, repeated transitions and a lack of concrete details. The overall percentage is the average of the sentences, weighted by length.</p><h2>Frequently asked questions</h2><details><summary>Why does my own text show as AI?</summary><p>Very formal, neutral or tidily written texts can look like AI even when a person wrote them. That is why the result is only indicative.</p></details><details><summary>What do the colors mean?</summary><p>Underlined text marks the sentences most likely to be AI. Yellow marks sentences with a medium probability.</p></details>
+</main>
+<footer><div class="foot"><div><a class="brand" href="/en/">YopTools</a><p style="margin-top:10px">Free AI tools to write better.</p></div><div><h4>Tools</h4><a href="/en/humanizer/">Text humanizer</a><a href="/en/ai-detector/">AI detector</a><a href="/en/review-replies/">Review replies</a><a href="/en/paraphraser/">Paraphraser</a><a href="/en/summarizer/">Summarizer</a><a href="/en/guides/">Guides</a></div><div><h4>Utilities</h4><a href="/en/word-counter/">Word counter</a><a href="/en/case-converter/">Case converter</a><a href="/en/password-generator/">Password generator</a><a href="/en/image-compressor/">Image compressor</a><a href="/en/percentage-calculator/">Percentage calculator</a><a href="/en/text-cleaner/">Text cleaner</a></div><div><h4>Legal</h4><a href="/en/privacy/">Privacy</a><a href="/en/legal-notice/">Legal notice</a><a href="/en/cookies/">Cookies</a></div><div><h4>Contact</h4><a href="/en/contact/">Write to us</a><a href="#" data-email></a><a href="#" data-donate hidden>Buy me a coffee</a></div></div><div class="copy">© 2026 YopTools. All rights reserved.</div></footer>
+<script src="/config.js"></script>
+<script src="/common.js"></script>
+<script>
+var inp=$("inp"),go=$("go"),MAX=1000,last=null,newText="";
+counter(inp,$("count"),MAX);
+function split(text){
+  var paras=text.split(/\n+/),flat=[],map=[];
+  paras.forEach(function(p,pi){
+    var m=p.trim().match(/[^.!?]+[.!?]+["”')\]]*|[^.!?]+$/g)||[];
+    m.forEach(function(s){s=s.trim();if(s){flat.push(s);map.push(pi)}});
+  });
+  return {flat:flat,map:map,np:paras.length};
+}
+go.addEventListener("click",async function(){
+  var t=inp.value.trim(),n=words(t);
+  if(!n){say("Paste some text first.","err");return}
+  if(n>MAX){say("The text is over 1,000 words. Split it into parts.","err");return}
+  var sp=split(t);
+  if(sp.flat.length>250){say("There are too many sentences. Try a shorter text.","err");return}
+  go.disabled=true;say("Analyzing…");
+  try{
+    var d=await api("/api/detect",{sentences:sp.flat});
+    var tot=0,acc=0,res=$("res"),curP=-1,pEl=null;res.innerHTML="";
+    sp.flat.forEach(function(s,i){
+      var w=words(s),sc=d.scores[i];tot+=w;acc+=w*sc;
+      if(sp.map[i]!==curP){curP=sp.map[i];pEl=document.createElement("p");res.appendChild(pEl)}
+      var el=document.createElement("span");el.textContent=s+" ";
+      el.className=sc>=70?"s-hi":sc>=40?"s-mid":"";el.title=sc+" % likely AI";pEl.appendChild(el);
+    });
+    var pct=Math.round(acc/Math.max(tot,1));
+    (function(){var el=$("pct"),t0=null;function f(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/900);el.textContent=Math.round(pct*(1-Math.pow(1-k,3)))+" % AI";if(k<1)requestAnimationFrame(f)}requestAnimationFrame(f)})();
+    setTimeout(function(){$("barfill").style.width=pct+"%"},80);
+    $("verd").textContent=pct<30?"Looks human-written":pct<60?"Mixed or unclear result":"Looks AI-written";
+    last={sp:sp,scores:d.scores};var nf=d.scores.filter(function(x){return x>=50}).length;
+    $("newbox").hidden=true;$("fix").hidden=nf===0;$("fixhint").textContent=nf?nf+(nf===1?" flagged sentence":" flagged sentences"):"";
+    $("empty").hidden=true;$("result").hidden=false;say("Analysis complete. Remember this is only an estimate.","ok");
+  }catch(e){say(e.message,"err")}
+  go.disabled=false;
+});
+$("fix").addEventListener("click",async function(){
+  if(!last)return;
+  var ix=[];last.scores.forEach(function(s,i){if(s>=50)ix.push(i)});
+  if(!ix.length)return;
+  var b=$("fix");b.disabled=true;say("Rewriting the flagged sentences…");
+  try{
+    var d=await api("/api/rewrite",{sentences:ix.map(function(i){return last.sp.flat[i]})});
+    var rep={};ix.forEach(function(i,k){rep[i]=d.sentences[k]});
+    var box=$("newtxt");box.innerHTML="";var cur=-1,pEl=null,plain=[],pp="";
+    last.sp.flat.forEach(function(s,i){
+      if(last.sp.map[i]!==cur){if(pEl)plain.push(pp.trim());cur=last.sp.map[i];pEl=document.createElement("p");box.appendChild(pEl);pp=""}
+      var txt=rep[i]!==undefined?rep[i]:s,el=document.createElement("span");
+      el.textContent=txt+" ";if(rep[i]!==undefined)el.className="s-new";pEl.appendChild(el);pp+=txt+" ";
+    });
+    plain.push(pp.trim());newText=plain.join("\n\n");
+    $("newbox").hidden=false;say("Done. The rewritten sentences appear in green.","ok");
+  }catch(e){say(e.message,"err")}
+  b.disabled=false;
+});
+$("copynew").addEventListener("click",function(){copyText(newText)});
+$("reanalyze").addEventListener("click",function(){inp.value=newText;inp.dispatchEvent(new Event("input"));go.click()});</script>
+</body>
+</html>

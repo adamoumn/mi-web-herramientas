@@ -172,6 +172,29 @@ async function summarize(body, env) {
   return { text: await gemini(env, prompt, { temperature: 0.4 }) };
 }
 
+// Mensajes de error en inglés (la web inglesa envía lang:"en")
+const EN = {
+  "Falta configurar la clave de la IA en el servidor.": "The AI key is not configured on the server.",
+  "Error de conexión con la IA.": "Connection error with the AI service.",
+  "La IA ha tardado demasiado. Inténtalo de nuevo en un momento.": "The AI took too long to respond. Please try again in a moment.",
+  "La herramienta está muy usada ahora mismo. Inténtalo en unos minutos.": "The tool is very busy right now. Please try again in a few minutes.",
+  "La IA está saturada ahora mismo. Inténtalo en un minuto.": "The AI service is overloaded right now. Please try again in a minute.",
+  "La IA no ha podido responder. Inténtalo de nuevo.": "The AI could not respond. Please try again.",
+  "La IA no devolvió resultado. Prueba con otro texto.": "The AI returned no result. Try a different text.",
+  "Pega primero un texto.": "Paste some text first.",
+  "El texto supera las 1.000 palabras.": "The text is over 1,000 words.",
+  "Pega primero la reseña del cliente.": "Paste the customer review first.",
+  "No se pudo analizar el texto. Inténtalo de nuevo.": "The text could not be analyzed. Please try again.",
+  "No hay frases que reescribir.": "There are no sentences to rewrite.",
+  "No se pudieron reescribir las frases. Inténtalo de nuevo.": "The sentences could not be rewritten. Please try again.",
+  "Pega un texto más largo (al menos 40 palabras).": "Paste a longer text (at least 40 words).",
+  "El texto supera las 3.000 palabras.": "The text is over 3,000 words.",
+  "Petición no válida.": "Invalid request.",
+  "Método no permitido.": "Method not allowed.",
+  "Error inesperado.": "Unexpected error.",
+};
+const tr = (m, body) => (body && body.lang === "en" ? EN[m] || m : m);
+
 const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect, "/api/rewrite": rewrite, "/api/paraphrase": paraphrase, "/api/summarize": summarize };
 
 
@@ -203,7 +226,7 @@ export default {
     try { body = await request.json(); } catch { return json({ error: "Petición no válida." }, 400); }
     const u = await usage(env, request);
     if (u && u.used >= u.limit)
-      return json({ error: `Has llegado al límite gratuito de hoy (${u.limit} usos). Vuelve mañana.` }, 429);
+      return json({ error: body.lang === "en" ? `You have reached today's free limit (${u.limit} uses). Come back tomorrow.` : `Has llegado al límite gratuito de hoy (${u.limit} usos). Vuelve mañana.` }, 429);
     try {
       const result = await handler(body, env);
       if (u) {
@@ -212,7 +235,7 @@ export default {
       }
       return json(result);
     } catch (e) {
-      return json({ error: e.msg || "Error inesperado." }, e.status || 500);
+      return json({ error: tr(e.msg || "Error inesperado.", body) }, e.status || 500);
     }
   },
 };

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Comprimir imágenes online gratis (JPG, PNG, WebP) | YopTools</title>
+<meta name="description" content="Reduce el peso de tus imágenes sin subirlas a ningún servidor. Elige calidad y tamaño. Gratis y sin registro.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://yoptools.com/comprimir-imagenes/">
+<link rel="alternate" hreflang="es" href="https://yoptools.com/comprimir-imagenes/">
+<link rel="alternate" hreflang="en" href="https://yoptools.com/en/image-compressor/">
+<link rel="alternate" hreflang="x-default" href="https://yoptools.com/comprimir-imagenes/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/">YopTools</a><nav><div class="dd"><button class="dd-btn" aria-expanded="false" aria-haspopup="true">Herramientas</button><div class="dd-menu" hidden><div><h5>Con IA</h5><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a><a href="/parafraseador/">Parafraseador</a><a href="/resumidor/">Resumidor</a></div><div><h5>Rápidas, sin IA</h5><a href="/contador-palabras/">Contador de palabras</a><a href="/cambiar-mayusculas/">Cambiar mayúsculas</a><a href="/generador-contrasenas/">Generador de contraseñas</a><a href="/comprimir-imagenes/">Comprimir imágenes</a><a href="/calculadora-porcentajes/">Calculadora de porcentajes</a><a href="/limpiar-texto/">Limpiar texto</a></div></div></div><a href="/guias/">Guías</a><a href="/contacto/">Contacto</a><span class="lang"><a href="/comprimir-imagenes/" data-lang="es" class="on" hreflang="es">ES</a><a href="/en/image-compressor/" data-lang="en" hreflang="en">EN</a></span></nav></header>
+<main class="wrap">
+<h1>Comprimir imágenes</h1><p class="sub">Reduce el peso de tus fotos en segundos. Se procesan en tu dispositivo: no se suben a ningún servidor.</p><section class="panel"><label for="fi">Elige tus imágenes (hasta 15)</label><input type="file" id="fi" accept="image/*" multiple><div class="opts" style="margin-top:16px"><div class="grow"><label for="q">Calidad: <span id="qv">75 %</span></label><input type="range" id="q" min="40" max="95" value="75"></div><div><label for="mw">Ancho máximo</label><select id="mw"><option value="0">Original</option><option value="2560">2560 px</option><option value="1920">1920 px</option><option value="1280">1280 px</option><option value="800">800 px</option></select></div><div><label for="ft">Formato de salida</label><select id="ft"><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></div></div><div class="row"><span></span><button class="main" id="go">Comprimir</button></div></section><div class="files" id="files"></div><div id="st" class="status" role="status"></div><p class="note">Todo se procesa en tu navegador: tu texto no se envía a ningún servidor.</p><h2>Cómo funciona</h2><p class="sub">Reduce el peso de tus imágenes ajustando la calidad y, si quieres, el ancho máximo. Todo se procesa en tu dispositivo: las imágenes no se suben a ningún servidor. Puedes elegir entre JPG y WebP, que suele pesar menos.</p><h2>Preguntas frecuentes</h2><details><summary>¿Pierdo calidad?</summary><p>Al comprimir con calidad inferior al máximo se pierde algo de detalle, normalmente imperceptible entre el 70 y el 85 %. Prueba valores y compara.</p></details><details><summary>¿Y las imágenes PNG con transparencia?</summary><p>Al convertir a JPG, las zonas transparentes se rellenan de blanco. Si necesitas conservar la transparencia, elige WebP.</p></details>
+</main>
+<footer><div class="foot"><div><a class="brand" href="/">YopTools</a><p style="margin-top:10px">Herramientas gratuitas con IA para escribir mejor, en español.</p></div><div><h4>Herramientas</h4><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a><a href="/parafraseador/">Parafraseador</a><a href="/resumidor/">Resumidor</a><a href="/guias/">Guías</a></div><div><h4>Utilidades</h4><a href="/contador-palabras/">Contador de palabras</a><a href="/cambiar-mayusculas/">Cambiar mayúsculas</a><a href="/generador-contrasenas/">Generador de contraseñas</a><a href="/comprimir-imagenes/">Comprimir imágenes</a><a href="/calculadora-porcentajes/">Calculadora de porcentajes</a><a href="/limpiar-texto/">Limpiar texto</a></div><div><h4>Legal</h4><a href="/privacidad/">Privacidad</a><a href="/aviso-legal/">Aviso legal</a><a href="/cookies/">Cookies</a></div><div><h4>Contacto</h4><a href="/contacto/">Escríbenos</a><a href="#" data-email></a><a href="#" data-donate hidden>Invítame a un café</a></div></div><div class="copy">© 2026 YopTools. Todos los derechos reservados.</div></footer>
+<script src="/config.js"></script>
+<script src="/common.js"></script>
+<script>var S={"pick": "Elige al menos una imagen.", "work": "Comprimiendo…", "dl": "Descargar", "bigger": "ya estaba muy optimizada", "fail": "no se pudo procesar", "done": "Listo. Las imágenes no han salido de tu dispositivo."};
+var fi=$("fi"),box=$("files");
+function kb(n){return n>1048576?(n/1048576).toFixed(2)+" MB":Math.max(1,Math.round(n/1024))+" KB"}
+function load(f){return new Promise(function(res,rej){var u=URL.createObjectURL(f),i=new Image();i.onload=function(){URL.revokeObjectURL(u);res(i)};i.onerror=function(){URL.revokeObjectURL(u);rej()};i.src=u})}
+async function one(f,q,mw,ft){var img=await load(f),w=img.naturalWidth,h=img.naturalHeight;
+if(mw&&w>mw){h=Math.round(h*mw/w);w=mw}
+var c=document.createElement("canvas");c.width=w;c.height=h;var x=c.getContext("2d");
+if(ft==="image/jpeg"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}
+x.drawImage(img,0,0,w,h);return new Promise(function(res){c.toBlob(function(b){res(b)},ft,q)})}
+$("q").addEventListener("input",function(){$("qv").textContent=$("q").value+" %"});
+$("go").addEventListener("click",async function(){
+var fs=[].slice.call(fi.files).filter(function(f){return /^image\//.test(f.type)}).slice(0,15);
+if(!fs.length){say(S.pick,"err");return}
+var q=+$("q").value/100,mw=+$("mw").value,ft=$("ft").value,ext=ft==="image/webp"?".webp":".jpg";
+$("go").disabled=true;box.innerHTML="";say(S.work);
+for(var i=0;i<fs.length;i++){var f=fs[i];
+try{var b=await one(f,q,mw,ft);if(!b)throw 0;
+var d=document.createElement("div");d.className="file";
+var a=document.createElement("a");a.className="btn";a.textContent=S.dl;a.href=URL.createObjectURL(b);a.download=f.name.replace(/\.[^.]+$/,"")+"-min"+ext;
+var pct=Math.round(100-100*b.size/f.size),info=document.createElement("span");info.innerHTML="<b></b><br><small></small>";
+info.firstChild.textContent=f.name;info.lastChild.textContent=kb(f.size)+" → "+kb(b.size)+" ("+(pct>=0?"-"+pct:"+"+(-pct))+" %)"+(pct<0?" · "+S.bigger:"");
+d.appendChild(info);d.appendChild(a);box.appendChild(d)}
+catch(e){var er=document.createElement("div");er.className="file";er.textContent=f.name+": "+S.fail;box.appendChild(er)}}
+$("go").disabled=false;say(S.done,"ok")});</script>
+</body>
+</html>

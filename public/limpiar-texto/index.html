@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Limpiar texto: quitar espacios y saltos de línea | YopTools</title>
+<meta name="description" content="Quita espacios dobles, líneas vacías y saltos de línea, elimina duplicados y ordena líneas. Gratis y sin subir tu texto.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://yoptools.com/limpiar-texto/">
+<link rel="alternate" hreflang="es" href="https://yoptools.com/limpiar-texto/">
+<link rel="alternate" hreflang="en" href="https://yoptools.com/en/text-cleaner/">
+<link rel="alternate" hreflang="x-default" href="https://yoptools.com/limpiar-texto/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/">YopTools</a><nav><div class="dd"><button class="dd-btn" aria-expanded="false" aria-haspopup="true">Herramientas</button><div class="dd-menu" hidden><div><h5>Con IA</h5><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a><a href="/parafraseador/">Parafraseador</a><a href="/resumidor/">Resumidor</a></div><div><h5>Rápidas, sin IA</h5><a href="/contador-palabras/">Contador de palabras</a><a href="/cambiar-mayusculas/">Cambiar mayúsculas</a><a href="/generador-contrasenas/">Generador de contraseñas</a><a href="/comprimir-imagenes/">Comprimir imágenes</a><a href="/calculadora-porcentajes/">Calculadora de porcentajes</a><a href="/limpiar-texto/">Limpiar texto</a></div></div></div><a href="/guias/">Guías</a><a href="/contacto/">Contacto</a><span class="lang"><a href="/limpiar-texto/" data-lang="es" class="on" hreflang="es">ES</a><a href="/en/text-cleaner/" data-lang="en" hreflang="en">EN</a></span></nav></header>
+<main class="wrap">
+<h1>Limpiar texto</h1><p class="sub">Quita espacios y saltos de línea sobrantes, elimina líneas duplicadas y ordena tus listas en un clic.</p><section class="panel"><label for="inp">Texto original</label><textarea id="inp" placeholder="Pega aquí tu texto…"></textarea><label class="chk"><input type="checkbox" id="sp" checked> Quitar espacios dobles y de los extremos</label><label class="chk"><input type="checkbox" id="em" checked> Quitar líneas vacías</label><label class="chk"><input type="checkbox" id="du"> Eliminar líneas duplicadas</label><label class="chk"><input type="checkbox" id="so"> Ordenar líneas de la A a la Z</label><label class="chk"><input type="checkbox" id="nl"> Unir todo en un solo párrafo</label><div class="row"><span></span><button class="main" id="go">Limpiar</button></div></section><section class="panel" style="margin-top:16px"><label for="out">Texto limpio</label><textarea id="out" readonly></textarea><div class="row"><span></span><button id="copy" disabled>Copiar</button></div></section><div id="st" class="status" role="status"></div><p class="note">Todo se procesa en tu navegador: tu texto no se envía a ningún servidor.</p><h2>Cómo funciona</h2><p class="sub">Limpia texto pegado de PDFs, correos o webs: quita espacios dobles, líneas vacías y saltos de línea innecesarios, elimina líneas duplicadas o ordénalas alfabéticamente. Útil para listas, copiar y pegar desde PDF o preparar datos.</p><h2>Preguntas frecuentes</h2><details><summary>¿Se guarda mi texto?</summary><p>No. Todo se procesa en tu navegador.</p></details><details><summary>¿Para qué sirve unir en un solo párrafo?</summary><p>Cuando copias texto de un PDF, cada línea suele quedar cortada. Esta opción lo une en un párrafo continuo.</p></details>
+</main>
+<footer><div class="foot"><div><a class="brand" href="/">YopTools</a><p style="margin-top:10px">Herramientas gratuitas con IA para escribir mejor, en español.</p></div><div><h4>Herramientas</h4><a href="/humanizador/">Humanizador de textos</a><a href="/detector-ia/">Detector de IA</a><a href="/respuestas-resenas/">Respuestas a reseñas</a><a href="/parafraseador/">Parafraseador</a><a href="/resumidor/">Resumidor</a><a href="/guias/">Guías</a></div><div><h4>Utilidades</h4><a href="/contador-palabras/">Contador de palabras</a><a href="/cambiar-mayusculas/">Cambiar mayúsculas</a><a href="/generador-contrasenas/">Generador de contraseñas</a><a href="/comprimir-imagenes/">Comprimir imágenes</a><a href="/calculadora-porcentajes/">Calculadora de porcentajes</a><a href="/limpiar-texto/">Limpiar texto</a></div><div><h4>Legal</h4><a href="/privacidad/">Privacidad</a><a href="/aviso-legal/">Aviso legal</a><a href="/cookies/">Cookies</a></div><div><h4>Contacto</h4><a href="/contacto/">Escríbenos</a><a href="#" data-email></a><a href="#" data-donate hidden>Invítame a un café</a></div></div><div class="copy">© 2026 YopTools. Todos los derechos reservados.</div></footer>
+<script src="/config.js"></script>
+<script src="/common.js"></script>
+<script>var S={"done": "Listo."};
+$("go").addEventListener("click",function(){var L=$("inp").value.split(/\r?\n/);
+if($("sp").checked)L=L.map(function(l){return l.replace(/[ \t]+/g," ").trim()});
+if($("em").checked)L=L.filter(function(l){return l.trim()});
+if($("du").checked){var seen={};L=L.filter(function(l){var k=l.trim();if(seen[k])return false;seen[k]=1;return true})}
+if($("so").checked)L=L.slice().sort(function(a,b){return a.localeCompare(b,LOC)});
+var o=$("nl").checked?L.join(" ").replace(/ {2,}/g," ").trim():L.join("\n");
+$("out").value=o;$("copy").disabled=!o;say(S.done,"ok")});
+$("copy").addEventListener("click",function(){copyText($("out").value)});</script>
+</body>
+</html>

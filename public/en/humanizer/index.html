@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free AI text humanizer | Make it sound human</title>
+<meta name="description" content="Humanize AI-written text for free: natural tone, varied sentences and no robotic filler. No sign-up.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://yoptools.com/en/humanizer/">
+<link rel="alternate" hreflang="es" href="https://yoptools.com/humanizador/">
+<link rel="alternate" hreflang="en" href="https://yoptools.com/en/humanizer/">
+<link rel="alternate" hreflang="x-default" href="https://yoptools.com/humanizador/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="/en/">YopTools</a><nav><div class="dd"><button class="dd-btn" aria-expanded="false" aria-haspopup="true">Tools</button><div class="dd-menu" hidden><div><h5>AI tools</h5><a href="/en/humanizer/">Text humanizer</a><a href="/en/ai-detector/">AI detector</a><a href="/en/review-replies/">Review replies</a><a href="/en/paraphraser/">Paraphraser</a><a href="/en/summarizer/">Summarizer</a></div><div><h5>Quick tools, no AI</h5><a href="/en/word-counter/">Word counter</a><a href="/en/case-converter/">Case converter</a><a href="/en/password-generator/">Password generator</a><a href="/en/image-compressor/">Image compressor</a><a href="/en/percentage-calculator/">Percentage calculator</a><a href="/en/text-cleaner/">Text cleaner</a></div></div></div><a href="/en/guides/">Guides</a><a href="/en/contact/">Contact</a><span class="lang"><a href="/humanizador/" data-lang="es" hreflang="es">ES</a><a href="/en/humanizer/" data-lang="en" class="on" hreflang="en">EN</a></span></nav></header>
+<main class="wrap">
+<h1>Text humanizer</h1><p class="sub">Paste AI-written text and get it back with a natural tone, more varied sentences and no robotic filler.</p>
+<div class="opts">
+<div><label for="tone">Tone</label><select id="tone"><option value="natural">Natural</option><option value="cercano">Friendly and informal</option><option value="profesional">Professional</option><option value="academico">Simple academic</option></select></div>
+<div><label for="lvl">Intensity</label><select id="lvl"><option value="suave">Light</option><option value="media" selected>Medium</option><option value="fuerte">Strong</option></select></div>
+</div>
+<div class="two">
+<section class="panel"><label for="inp">Your text</label><textarea id="inp" placeholder="Paste your text here (max 1,000 words)…"></textarea>
+<div class="row"><span id="count" class="meta">0 / 1,000 words</span><button class="main" id="go">Humanize text</button></div></section>
+<section class="panel" aria-live="polite"><span class="lab">Result</span><div id="out" class="out empty">Your rewritten text will appear here.</div>
+<div class="row"><span id="oc" class="meta"></span><label class="meta" style="display:flex;gap:6px;align-items:center;margin:0;font-weight:500"><input type="checkbox" id="diff" checked> Highlight changes</label><button id="copy" disabled>Copy</button></div></section>
+</div>
+<div id="st" class="status" role="status"></div>
+<p class="note">Do not paste personal data or confidential information. Always review the result before using it.</p>
+<h2>How it works</h2><p class="sub">The tool rewrites your text while keeping its meaning, changes the rhythm of the sentences and removes typical AI phrasing. The higher the intensity, the more the wording changes. No tool can guarantee that a text will not be flagged as AI.</p><h2>Frequently asked questions</h2><details><summary>Does it change the meaning of my text?</summary><p>It should not. It is designed to keep the ideas and data. Still, review the result before using it.</p></details><details><summary>Does it work with other languages?</summary><p>Yes. It keeps the language of the text you paste, in English as well as Spanish.</p></details>
+</main>
+<footer><div class="foot"><div><a class="brand" href="/en/">YopTools</a><p style="margin-top:10px">Free AI tools to write better.</p></div><div><h4>Tools</h4><a href="/en/humanizer/">Text humanizer</a><a href="/en/ai-detector/">AI detector</a><a href="/en/review-replies/">Review replies</a><a href="/en/paraphraser/">Paraphraser</a><a href="/en/summarizer/">Summarizer</a><a href="/en/guides/">Guides</a></div><div><h4>Utilities</h4><a href="/en/word-counter/">Word counter</a><a href="/en/case-converter/">Case converter</a><a href="/en/password-generator/">Password generator</a><a href="/en/image-compressor/">Image compressor</a><a href="/en/percentage-calculator/">Percentage calculator</a><a href="/en/text-cleaner/">Text cleaner</a></div><div><h4>Legal</h4><a href="/en/privacy/">Privacy</a><a href="/en/legal-notice/">Legal notice</a><a href="/en/cookies/">Cookies</a></div><div><h4>Contact</h4><a href="/en/contact/">Write to us</a><a href="#" data-email></a><a href="#" data-donate hidden>Buy me a coffee</a></div></div><div class="copy">© 2026 YopTools. All rights reserved.</div></footer>
+<script src="/config.js"></script>
+<script src="/common.js"></script>
+<script>
+var inp=$("inp"),out=$("out"),go=$("go"),cp=$("copy"),MAX=1000,orig="",lastText="";
+function norm(w){return w.toLowerCase().replace(/[.,;:!?¡¿"“”'’()]/g,"")}
+function render(){
+  var a=orig.split(/\s+/).filter(Boolean).map(norm),tb=lastText.split(/(\s+)/),B=[];
+  tb.forEach(function(t,i){if(t&&!/^\s+$/.test(t))B.push({t:t,i:i,n:norm(t)})});
+  var n=a.length,m=B.length,w=m+1,L=new Uint16Array((n+1)*w);
+  for(var i=n-1;i>=0;i--)for(var j=m-1;j>=0;j--)L[i*w+j]=a[i]===B[j].n?L[(i+1)*w+j+1]+1:Math.max(L[(i+1)*w+j],L[i*w+j+1]);
+  var same={},x=0,y=0,kept=0;
+  while(x<n&&y<m){if(a[x]===B[y].n){same[B[y].i]=1;kept++;x++;y++}else if(L[(x+1)*w+y]>=L[x*w+y+1])x++;else y++}
+  var pct=m?Math.round(100*(m-kept)/m):0;
+  $("oc").textContent=fmt(m)+" words · "+pct+" % changed";
+  out.textContent="";
+  if(!$("diff").checked){out.textContent=lastText;return}
+  tb.forEach(function(t,i){if(!t)return;
+    if(/^\s+$/.test(t)||same[i]){out.appendChild(document.createTextNode(t))}
+    else{var s=document.createElement("span");s.className="s-new";s.textContent=t;out.appendChild(s)}});
+}
+counter(inp,$("count"),MAX);
+go.addEventListener("click",async function(){
+  var t=inp.value.trim(),n=words(t);
+  if(!n){say("Paste some text first.","err");return}
+  if(n>MAX){say("The text is over 1,000 words. Split it into parts.","err");return}
+  go.disabled=true;cp.disabled=true;say("Humanizing…");
+  try{var d=await api("/api/humanize",{text:t,tone:$("tone").value,level:$("lvl").value});
+    orig=t;lastText=d.text;out.classList.remove("empty");render();cp.disabled=false;say("Done. Review the text before using it.","ok");
+  }catch(e){say(e.message,"err")}
+  go.disabled=false;
+});
+cp.addEventListener("click",function(){copyText(lastText)});
+$("diff").addEventListener("change",function(){if(lastText)render()});</script>
+</body>
+</html>
