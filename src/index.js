@@ -246,6 +246,26 @@ async function carta(body, env) {
   return { text: await gemini(env, prompt, { temperature: 0.8 }) };
 }
 
+// Opiniones (👍/👎): solo un contador anónimo por página en el KV. Se ven en Cloudflare > KV > tu namespace.
+async function feedback(request, env) {
+  let b;
+  try { b = await request.json(); } catch { return json({ ok: false }, 400); }
+  const page = String(b.page || ""), vote = b.vote;
+  if (!/^\/[a-z0-9\-\/]{0,90}$/.test(page) || !["up", "down"].includes(vote)) return json({ ok: false }, 400);
+  if (!env.LIMITS) return json({ ok: true });
+  try {
+    const ip = request.headers.get("CF-Connecting-IP") || "x";
+    const ipKey = `fbip:${ip}:${new Date().toISOString().slice(0, 10)}`;
+    const n = parseInt((await env.LIMITS.get(ipKey)) || "0", 10);
+    if (n >= 6) return json({ ok: true });
+    const key = `fb:${page}:${vote}`;
+    const c = parseInt((await env.LIMITS.get(key)) || "0", 10);
+    await env.LIMITS.put(key, String(c + 1));
+    await env.LIMITS.put(ipKey, String(n + 1), { expirationTtl: 90000 });
+  } catch {}
+  return json({ ok: true });
+}
+
 const ROUTES = { "/api/humanize": humanize, "/api/resenas": resenas, "/api/detect": detect, "/api/rewrite": rewrite, "/api/paraphrase": paraphrase, "/api/summarize": summarize, "/api/carta": carta };
 
 
@@ -269,6 +289,10 @@ export default {
     if (url.hostname !== host && !url.hostname.startsWith("localhost") && (request.method === "GET" || request.method === "HEAD")) {
       url.protocol = "https:"; url.hostname = host; url.port = "";
       return Response.redirect(url.toString(), 301);
+    }
+    if (pathname === "/api/feedback") {
+      if (request.method !== "POST") return json({ error: "Método no permitido." }, 405);
+      return feedback(request, env);
     }
     const handler = ROUTES[pathname];
     if (!handler) return env.ASSETS.fetch(request);

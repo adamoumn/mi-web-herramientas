@@ -78,3 +78,51 @@ if (_D) document.querySelectorAll("[data-donate]").forEach(function (e) { e.href
   bar.children[2].addEventListener("click", function () { set(LANG); bar.remove(); });
   document.body.appendChild(bar);
 })();
+
+// ---- Analítica de Cloudflare (solo si pones ANALYTICS_TOKEN en config.js) ----
+if (typeof ANALYTICS_TOKEN === "string" && ANALYTICS_TOKEN) {
+  var _a = document.createElement("script"); _a.defer = true;
+  _a.src = "https://static.cloudflareinsights.com/beacon.min.js";
+  _a.setAttribute("data-cf-beacon", JSON.stringify({ token: ANALYTICS_TOKEN }));
+  document.head.appendChild(_a);
+}
+// ---- Opinión (👍 👎) y botones de compartir en las herramientas ----
+(function () {
+  var st = $("st"); if (!st) return;
+  var en = LANG === "en";
+  var T = en ? { q: "Was this useful?", thx: "Thanks for your feedback!", bad: "Thanks. Tell us what to improve:", mail: "Email us", share: "Share:", copy: "Copy link", copied: "Link copied", subj: "Feedback" }
+             : { q: "¿Te ha servido?", thx: "¡Gracias por tu opinión!", bad: "Gracias. Cuéntanos qué mejorar:", mail: "Escríbenos", share: "Compartir:", copy: "Copiar enlace", copied: "Enlace copiado", subj: "Opinión" };
+  var page = location.pathname, url = location.origin + page, title = document.title;
+  var key = "fbv:" + page, voted = null;
+  try { voted = localStorage.getItem(key); } catch (e) {}
+  var box = document.createElement("div"); box.className = "fb";
+  function el(tag, txt, cls) { var x = document.createElement(tag); if (txt) x.textContent = txt; if (cls) x.className = cls; return x; }
+  var q = el("span", T.q), up = el("button", "👍"), down = el("button", "👎"), msg = el("span", "", "fbmsg");
+  up.setAttribute("aria-label", "👍"); down.setAttribute("aria-label", "👎");
+  function done(v) {
+    up.disabled = down.disabled = true;
+    msg.textContent = "";
+    if (v === "down") {
+      msg.textContent = T.bad + " ";
+      var a = el("a", T.mail); a.href = "mailto:" + _E + "?subject=" + encodeURIComponent(T.subj + " - " + page); msg.appendChild(a);
+    } else msg.textContent = T.thx;
+  }
+  function vote(v) {
+    done(v); try { localStorage.setItem(key, v); } catch (e) {}
+    try { fetch("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ page: page, vote: v }) }); } catch (e) {}
+  }
+  up.addEventListener("click", function () { vote("up"); });
+  down.addEventListener("click", function () { vote("down"); });
+  box.appendChild(q); box.appendChild(up); box.appendChild(down); box.appendChild(msg);
+  box.appendChild(el("span", "", "sp"));
+  box.appendChild(el("span", T.share));
+  var e1 = encodeURIComponent(url), e2 = encodeURIComponent(title);
+  [["WhatsApp", "https://wa.me/?text=" + e2 + "%20" + e1], ["X", "https://twitter.com/intent/tweet?text=" + e2 + "&url=" + e1], ["Reddit", "https://www.reddit.com/submit?url=" + e1 + "&title=" + e2], ["Telegram", "https://t.me/share/url?url=" + e1 + "&text=" + e2]].forEach(function (p) {
+    var a = el("a", p[0]); a.href = p[1]; a.target = "_blank"; a.rel = "noopener"; box.appendChild(a);
+  });
+  var cp = el("button", T.copy); cp.addEventListener("click", function () {
+    try { navigator.clipboard.writeText(url); cp.textContent = T.copied; } catch (e) { prompt(url); }
+  }); box.appendChild(cp);
+  st.insertAdjacentElement("afterend", box);
+  if (voted) done(voted);
+})();
