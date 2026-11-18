@@ -41,7 +41,7 @@ if (_D) document.querySelectorAll("[data-donate]").forEach(function (e) { e.href
 
 (function () {
   if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var els = document.querySelectorAll(".tool,.points p,details,.two>.panel,.prose h2,.pill,.cta");
+  var els = document.querySelectorAll(".tool,.tcard,.feat,.herobox,.points p,details,.two>.panel,.prose h2,.pill,.cta");
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
@@ -125,4 +125,13 @@ if (typeof ANALYTICS_TOKEN === "string" && ANALYTICS_TOKEN) {
   }); box.appendChild(cp);
   st.insertAdjacentElement("afterend", box);
   if (voted) done(voted);
+})();
+
+// ---- Texto pegado en la portada: se rellena solo en la herramienta elegida ----
+(function () {
+  var t = null;
+  try { t = sessionStorage.getItem("prefill"); if (t) sessionStorage.removeItem("prefill"); } catch (e) {}
+  if (!t) return;
+  var i = $("inp") || $("rev"); if (!i) return;
+  i.value = t; document.addEventListener("DOMContentLoaded", function () { i.dispatchEvent(new Event("input")); });
 })();
