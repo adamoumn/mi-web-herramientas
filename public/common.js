@@ -1,3 +1,5 @@
+// Si alguien entra por www o por la dirección workers.dev, lo llevamos al dominio principal.
+(function () { var h = location.hostname; if (h === "www.yoptools.com" || /\.workers\.dev$/.test(h)) location.replace("https://yoptools.com" + location.pathname + location.search + location.hash); })();
 // Los datos personales están en config.js
 var _E = typeof CONTACT_EMAIL === "string" ? CONTACT_EMAIL : "";
 var _N = typeof OWNER_NAME === "string" ? OWNER_NAME : "";
@@ -134,4 +136,19 @@ if (typeof ANALYTICS_TOKEN === "string" && ANALYTICS_TOKEN) {
   if (!t) return;
   var i = $("inp") || $("rev"); if (!i) return;
   i.value = t; document.addEventListener("DOMContentLoaded", function () { i.dispatchEvent(new Event("input")); });
+})();
+
+// ---- Modo oscuro ----
+(function () {
+  var b = document.getElementById("theme"); if (!b) return;
+  var en = LANG === "en";
+  function dark() { return document.documentElement.getAttribute("data-theme") === "dark"; }
+  function label() { var t = dark() ? (en ? "Light mode" : "Modo claro") : (en ? "Dark mode" : "Modo oscuro"); b.setAttribute("aria-label", t); b.title = t; }
+  b.addEventListener("click", function () {
+    var t = dark() ? "light" : "dark";
+    if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); else document.documentElement.removeAttribute("data-theme");
+    try { localStorage.setItem("theme", t); } catch (e) {}
+    label();
+  });
+  label();
 })();
